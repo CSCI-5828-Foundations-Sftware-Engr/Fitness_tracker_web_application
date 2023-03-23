@@ -14,7 +14,7 @@ collection = client["user_login_info"]
 @app.route('/login', methods=['post','get'])
 def register():
     # get the request data
-    print(json.dumps(request, indent=4))
+    print(request)
     data = request.get_json()
     print(json.dumps(data, indent=4))
     # res = {"data" : {"calorie_intake": data['calorie_intake'], "calorie_burnt": data['calorie_burnt']}}
