@@ -9,8 +9,19 @@ app = Flask(__name__, static_url_path='', static_folder='fitness-tracker-react/b
 api = Api(app)
 
 @app.route("/", defaults={'path':''})
-def serve(path):
-    return send_from_directory(app.static_folder,'index.html')
+@app.route("/login", defaults={'path':''})
+def register():
+    if request.method == "POST":
+        # get the request data
+        print(request)
+        data = request.get_json()
+        print(json.dumps(data, indent=4))
+        # res = {"data" : {"calorie_intake": data['calorie_intake'], "calorie_burnt": data['calorie_burnt']}}
+        res ={"calorie_intake": data['calorie_intake'], "calorie_burnt": data['calorie_burnt']}
+        print(res)
+        return res
+    else:
+        return send_from_directory(app.static_folder,'index.html')
 
 api.add_resource(HelloApiHandler, '/flask/hello')
 
