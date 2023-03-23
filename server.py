@@ -5,6 +5,8 @@ import json
 app = Flask(__name__)
 app.secret_key = "testing"
 
+CORS(app)
+
 # connect to MongoDB
 client = pymongo.MongoClient("mongodb://127.0.0.1:27017")
 db = client['fitness_tracker']
