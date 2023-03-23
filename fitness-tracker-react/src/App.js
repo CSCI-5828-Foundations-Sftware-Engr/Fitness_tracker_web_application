@@ -1,4 +1,5 @@
 import './App.css';
+import React, { useState } from "react";
 
 function App() {
   return (
@@ -10,7 +11,7 @@ function App() {
 
 const LoginForm = props => (
   <div id="loginform">
-    <FormHeader title="Login" />
+    <FormHeader title="Fitness-Tracker-Application" />
     <Form />
   </div>
 );
@@ -22,17 +23,44 @@ const FormHeader = props => (
 
 const Form = props => (
   <div>
-    <FormInput description="Username" placeholder="Enter username" type="text" />
-    <FormInput description="Password" placeholder="Enter password" type="password" />
-    <FormButton title="Log in" />
+    <FormInput description="Calorie Intake" placeholder="Enter Calorie intake" type="number" />
+    <FormInput description="Calories Burnt" placeholder="Enter Calories burnt" type="text" />
+    <FormButton title="Submit" />
   </div>
 );
 
-const FormButton = props => (
-  <div id="button" class="row">
-    <button>{props.title}</button>
-  </div>
-);
+const FormButton = props => {
+  const [response, setResponse] = React.useState('');
+  const postData = () => {
+    
+    const calorie_intake = document.querySelector('input[type="number"]').value;
+    const calorie_burnt = document.querySelector('input[type="text"]').value;
+
+    fetch('/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        calorie_intake: calorie_intake,
+        calorie_burnt: calorie_burnt
+      })
+    })
+    .then(response => response.json())
+    .then(data => {console.log(data); setResponse(data)})
+    .catch(error => console.error(error));
+  }
+
+  return (
+    <div>
+      <div id="button" class="row" onClick={postData}>
+        <button>{props.title}</button>
+      </div>
+      <div class="row"> Calories Intake: {response["calorie_intake"]}</div>
+      <div class="row">Calories Burnt: {response["calorie_burnt"]}</div>
+    </div>
+  );
+}
 
 const FormInput = props => (
   <div class="row">
