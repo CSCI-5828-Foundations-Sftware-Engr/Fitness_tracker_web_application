@@ -8,8 +8,8 @@ import json
 app = Flask(__name__, static_url_path='', static_folder='fitness-tracker-react/build')
 api = Api(app)
 
-@app.route("/")
-@app.route("/login")
+@app.route("/", methods=['post','get'])
+@app.route("/login", methods=['post','get'])
 def register():
     if request.method == "POST":
         # get the request data
