@@ -13,4 +13,4 @@ The MongoDB database stores all the data related to the user's fitness activitie
 
 Heroku, a cloud platform, is used to host the fitness tracker web application. Heroku provides a scalable and secure infrastructure for the application to run on, and it can handle large amounts of traffic without any downtime.
 
-Overall, this architecture provides a robust and scalable platform for a fitness tracker web application, allowing users to track and monitor their fitness activities, set goals, and view their progress over time.
+Overall, this architecture allows users to track and monitor their fitness activities, set goals, and view their progress over time.
