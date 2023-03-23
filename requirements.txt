@@ -21,9 +21,5 @@ pyrsistent==0.15.5
 pyserial==3.4
 PyYAML==5.3.1
 six==1.14.0
-sos==4.4
 tqdm==4.64.1
-ubuntu-advantage-tools==8001
-ufw==0.36
 Werkzeug==2.2.3
-zipp==1.0.0
