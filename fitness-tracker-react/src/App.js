@@ -36,19 +36,23 @@ const FormButton = props => {
     const calorie_intake = document.querySelector('input[type="number"]').value;
     const calorie_burnt = document.querySelector('input[type="text"]').value;
 
-    fetch('/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        calorie_intake: calorie_intake,
-        calorie_burnt: calorie_burnt
-      })
-    })
-    .then(response => response.json())
-    .then(data => {console.log(data); setResponse(data)})
-    .catch(error => console.error(error));
+    // fetch('/login', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   },
+    //   body: JSON.stringify({
+    //     calorie_intake: calorie_intake,
+    //     calorie_burnt: calorie_burnt
+    //   })
+    // })
+    // .then(response => response.json())
+    // .then(data => {console.log(data); setResponse(data)})
+    // .catch(error => console.error(error));
+    var data = {};
+    data["calorie_intake"] = calorie_intake;
+    data["calorie_burnt"] = calorie_burnt;
+    setResponse(data);
   }
 
   return (
