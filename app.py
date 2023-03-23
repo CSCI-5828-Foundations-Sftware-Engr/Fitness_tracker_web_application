@@ -3,7 +3,6 @@ from flask_restful import Api, Resource, reqparse
 
 from flask_cors import CORS #comment this on deployment
 from api.HelloApiHandler import HelloApiHandler
-import pymongo
 import json
 
 app = Flask(__name__, static_url_path='', static_folder='fitness-tracker-react/build')
