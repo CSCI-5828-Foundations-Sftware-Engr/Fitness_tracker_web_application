@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request
-import hashlib, pymongo
+import pymongo
 
 app = Flask(__name__)
 app.secret_key = "testing"
