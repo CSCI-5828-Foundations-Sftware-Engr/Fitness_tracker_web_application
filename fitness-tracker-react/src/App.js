@@ -36,7 +36,7 @@ const FormButton = props => {
     const calorie_intake = document.querySelector('input[type="number"]').value;
     const calorie_burnt = document.querySelector('input[type="text"]').value;
 
-    fetch('https://fitness-tracker-staging.herokuapp.com/login', {
+    fetch('/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
