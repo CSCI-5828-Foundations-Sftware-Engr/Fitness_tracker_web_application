@@ -1,76 +1,30 @@
 import './App.css';
-import React, { useState } from "react";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios'
 
 function App() {
+  const [getMessage, setGetMessage] = useState({})
+
+  useEffect(()=>{
+    axios.get('https://fitness-tracker-staging.herokuapp.com/flask/hello').then(response => {
+      console.log("SUCCESS", response)
+      setGetMessage(response)
+    }).catch(error => {
+      console.log(error)
+    })
+
+  }, [])
   return (
-    <div class="mainPage">
-      <LoginForm />
+    <div className="App">
+      <header className="App-header">
+        <p>React + Flask Tutorial</p>
+        <div>{getMessage.status === 200 ? 
+          <h3>{getMessage.data.message}</h3>
+          :
+          <h3>LOADING</h3>}</div>
+      </header>
     </div>
   );
 }
-
-const LoginForm = props => (
-  <div id="loginform">
-    <FormHeader title="Fitness-Tracker-Application" />
-    <Form />
-  </div>
-);
-
-const FormHeader = props => (
-  <h2 id="headerTitle">{props.title}</h2>
-);
-
-
-const Form = props => (
-  <div>
-    <FormInput description="Calorie Intake" placeholder="Enter Calorie intake" type="number" />
-    <FormInput description="Calories Burnt" placeholder="Enter Calories burnt" type="text" />
-    <FormButton title="Submit" />
-  </div>
-);
-
-const FormButton = props => {
-  const [response, setResponse] = React.useState('');
-  const postData = () => {
-    
-    const calorie_intake = document.querySelector('input[type="number"]').value;
-    const calorie_burnt = document.querySelector('input[type="text"]').value;
-
-    // fetch('/login', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: JSON.stringify({
-    //     calorie_intake: calorie_intake,
-    //     calorie_burnt: calorie_burnt
-    //   })
-    // })
-    // .then(response => response.json())
-    // .then(data => {console.log(data); setResponse(data)})
-    // .catch(error => console.error(error));
-    var data = {};
-    data["calorie_intake"] = calorie_intake;
-    data["calorie_burnt"] = calorie_burnt;
-    setResponse(data);
-  }
-
-  return (
-    <div>
-      <div id="button" class="row" onClick={postData}>
-        <button>{props.title}</button>
-      </div>
-      <div class="row"> Calories Intake: {response["calorie_intake"]}</div>
-      <div class="row">Calories Burnt: {response["calorie_burnt"]}</div>
-    </div>
-  );
-}
-
-const FormInput = props => (
-  <div class="row">
-    <label>{props.description}</label>
-    <input type={props.type} placeholder={props.placeholder} />
-  </div>
-);
 
 export default App;
