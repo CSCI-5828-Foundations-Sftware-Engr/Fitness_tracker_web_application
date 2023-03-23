@@ -16,18 +16,10 @@ collection = client["user_login_info"]
 def register():
     # get the request data
     data = request.get_json()
-
-    # hash the password
-    password_hash = hashlib.sha256(data['password'].encode()).hexdigest()
-
-    # insert the user into the database
-    result = db.users.insert_one({
-        'email': data['email'],
-        'password': password_hash
-    })
-
-    # return the user ID
-    return jsonify({'user_id': str(result.inserted_id)})
+    # res = {"data" : {"calorie_intake": data['calorie_intake'], "calorie_burnt": data['calorie_burnt']}}
+    res ={"calorie_intake": data['calorie_intake'], "calorie_burnt": data['calorie_burnt']}
+    print(res)
+    return res
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", debug = True)
