@@ -1,5 +1,6 @@
 import './App.css';
 import React, { useState } from "react";
+import logo from "./logo-transparent-svg.svg";
 
 function App() {
   return (
@@ -16,15 +17,42 @@ const LoginForm = props => (
   </div>
 );
 
-const FormHeader = props => (
-  <h2 id="headerTitle">{props.title}</h2>
-);
+const FormHeader = props => {
+  const [activeTab, setActiveTab] = useState('login');
+
+  const handleTabChange = tab => {
+    setActiveTab(tab);
+  };
+
+  return (
+    <div >
+      <div class="form-header">
+      <img src={logo} width={200} height={200} />
+      </div>   
+      <div className="tabs">
+        <button
+          className={activeTab === 'login' ? 'active' : ''}
+          onClick={() => handleTabChange('login')}
+        >
+          Login
+        </button>
+        <button
+          className={activeTab === 'signup' ? 'active' : ''}
+          onClick={() => handleTabChange('signup')}
+        >
+          Signup
+        </button>
+      </div>
+    </div>
+  );
+};
+
 
 
 const Form = props => (
   <div>
-    <FormInput description="Calorie Intake" placeholder="Enter Calorie intake" type="number" />
-    <FormInput description="Calories Burnt" placeholder="Enter Calories burnt" type="text" />
+    <FormInput description="Username" placeholder="Enter Username" type="text" />
+    <FormInput description="Password" placeholder="Enter Password" type="password" />
     <FormButton title="Submit" />
   </div>
 );
@@ -33,8 +61,8 @@ const FormButton = props => {
   const [response, setResponse] = React.useState('');
   const postData = () => {
     
-    const calorie_intake = document.querySelector('input[type="number"]').value;
-    const calorie_burnt = document.querySelector('input[type="text"]').value;
+    const username = document.querySelector('input[type="text"]').value;
+    const password = document.querySelector('input[type="password"]').value;
 
     fetch('/login', {
       method: 'POST',
@@ -42,8 +70,8 @@ const FormButton = props => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        calorie_intake: calorie_intake,
-        calorie_burnt: calorie_burnt
+        username: username,
+        password: password
       })
     })
     .then(response => response.json())
@@ -56,8 +84,6 @@ const FormButton = props => {
       <div id="button" class="row" onClick={postData}>
         <button>{props.title}</button>
       </div>
-      <div class="row"> Calories Intake: {response["calorie_intake"]}</div>
-      <div class="row">Calories Burnt: {response["calorie_burnt"]}</div>
     </div>
   );
 }
