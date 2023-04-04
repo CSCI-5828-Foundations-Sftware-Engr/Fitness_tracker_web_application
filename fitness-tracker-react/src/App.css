@@ -17,7 +17,7 @@ html{
 
 #loginform{
   width: 25%;
-  height: 650px;
+  height: 620px;
   margin: 100px auto;
   background-color: #FFFFFF;
   border-radius: 25px;
@@ -29,6 +29,12 @@ html{
   padding: 2rem 0;
   margin: 0;
   font-size: 2rem;
+}
+
+.form-header {
+  justify-content: center;
+  display: grid;
+  padding: 20px;
 }
 
 .row{
@@ -94,3 +100,26 @@ html{
 #button{
   padding-bottom: 1.5rem;
 }
+
+.tabs {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+}
+
+.tabs button {
+  background-color: transparent;
+  border: none;
+  color: #AAA;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 10px;
+  width: 40%;
+  text-transform: uppercase;
+}
+
+.tabs button.active {
+  border-bottom: 3px solid rgb(34,193,195);
+  color:  rgb(34,193,195) ;
+}
+
