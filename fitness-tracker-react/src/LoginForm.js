@@ -3,100 +3,104 @@ import React, { useState } from "react";
 
 const LoginForm = props => {
     const [activeTab, setActiveTab] = useState('login');
-  
+    const [formData, setFormData] = useState({});
+
     const handleTabChange = tab => {
-      setActiveTab(tab);
+        setActiveTab(tab);
     };
-  
+
+    const handleChange = event => {
+        setFormData({ ...formData, [event.target.name]: event.target.value });
+    };
+
+    const handleSubmit = async event => {
+        event.preventDefault();
+        try {
+            const response = await fetch(`/${activeTab.toLowerCase()}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+            const data = await response.json();
+            console.log(data);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     return (
-      <div id="loginform">    
-        <FormHeader activeTab={activeTab} handleTabChange={handleTabChange} />
-        {activeTab === 'login' ? <LoginFormInput /> : <SignupFormInput />}
-      </div>
-    );
-  };
-  
-  
-  const FormHeader = props => {
-    return (
-      <div >
-        <div className="form-header">
-          <img src={logo} width={200} height={200} />
-        </div>   
-        <div className="tabs">
-          <button
-            className={props.activeTab === 'login' ? 'active' : ''}
-            onClick={() => props.handleTabChange('login')}
-          >
-            Login
-          </button>
-          <button
-            className={props.activeTab === 'signup' ? 'active' : ''}
-            onClick={() => props.handleTabChange('signup')}
-          >
-            Signup
-          </button>
+        <div id="loginform">
+            <FormHeader activeTab={activeTab} handleTabChange={handleTabChange} />
+            {activeTab === 'login' ? <LoginFormInput onChange={handleChange} handleSubmit={handleSubmit} /> : <SignupFormInput onChange={handleChange} handleSubmit={handleSubmit} />}
         </div>
-      </div>
     );
-  };
-  
-  
-  
-  const LoginFormInput = props => (
-    <div>
-      <FormInput description="Username" placeholder="Enter Username" type="text" />
-      <FormInput description="Password" placeholder="Enter Password" type="password" />
-      <FormButton title="Submit" />
-    </div>
-  );
-  
-  const SignupFormInput = props => (
-    <div>
-      <FormInput description="Username" placeholder="Enter Username" type="text" />
-      <FormInput description="Password" placeholder="Enter Password" type="password" />
-      <FormInput description="Email" placeholder="Enter Email" type="email" />
-      <FormInput description="Contact Numner" placeholder="Enter Contact Number" type="number" />
-      <FormButton title="Register" />
-    </div>
-  );
-  
-  const FormButton = props => {
-    const [response, setResponse] = React.useState('');
-    const postData = () => {
-      
-      const username = document.querySelector('input[type="text"]').value;
-      const password = document.querySelector('input[type="password"]').value;
-  
-      fetch('/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          username: username,
-          password: password
-        })
-      })
-      .then(response => response.json())
-      .then(data => {console.log(data); setResponse(data)})
-      .catch(error => console.error(error));
-    }
-  
+};
+
+
+const FormHeader = props => {
     return (
-      <div>
-        <div id="button" class="row" onClick={postData}>
-          <button>{props.title}</button>
+        <div >
+            <div className="form-header">
+                <img src={logo} width={200} height={200} />
+            </div>
+            <div className="tabs">
+                <button
+                    className={props.activeTab === 'login' ? 'active' : ''}
+                    onClick={() => props.handleTabChange('login')}
+                >
+                    Login
+                </button>
+                <button
+                    className={props.activeTab === 'signup' ? 'active' : ''}
+                    onClick={() => props.handleTabChange('signup')}
+                >
+                    Signup
+                </button>
+            </div>
         </div>
-      </div>
     );
-  }
-  
-  const FormInput = props => (
+};
+
+const LoginFormInput = props => (
+    <div>
+        <FormInput name="username" description="Username" placeholder="Enter Username" type="text" onChange={props.onChange} />
+        <FormInput name="password" description="Password" placeholder="Enter Password" type="password" onChange={props.onChange} />
+        <FormButton title="Submit" handleSubmit={props.handleSubmit} />
+    </div>
+);
+
+const SignupFormInput = props => (
+    <div>
+        <FormInput name="username" description="Username" placeholder="Enter Username" type="text" onChange={props.onChange} />
+        <FormInput name="password" description="Password" placeholder="Enter Password" type="password" onChange={props.onChange} />
+        <FormInput name="email" description="Email" placeholder="Enter Email" type="email" onChange={props.onChange} />
+        <FormInput name="contactNumber" description="Contact Number" placeholder="Enter Contact Number" type="number" onChange={props.onChange} />
+        <FormButton title="Register" handleSubmit={props.handleSubmit} />
+    </div>
+);
+
+
+const FormButton = props => {
+
+
+    return (
+        <div>
+            <form onSubmit={props.handleSubmit}>
+                <div id="button" class="row">
+                    <button>{props.title}</button>
+                </div>
+            </form>
+        </div>
+    );
+};
+
+const FormInput = props => (
     <div class="row">
-      <label>{props.description}</label>
-      <input type={props.type} placeholder={props.placeholder} />
+        <label>{props.description}</label>
+        <input type={props.type} name={props.name} placeholder={props.placeholder} onChange={props.onChange} />
     </div>
-  );
-  
-  export default LoginForm;
+);
+
+export default LoginForm;
