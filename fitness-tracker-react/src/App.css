@@ -15,12 +15,15 @@ html{
   height: 100%;
 }
 
-#loginform{
+#loginform {
   width: 25%;
-  height: 650px;
-  margin: 100px auto;
+  margin-top: 50px;
+  margin-bottom: 215px;
+  margin-left: auto;
+  margin-right: auto;
   background-color: #FFFFFF;
   border-radius: 25px;
+  overflow: hidden;
 }
 
 #headerTitle{
@@ -31,11 +34,17 @@ html{
   font-size: 2rem;
 }
 
+.form-header {
+  justify-content: center;
+  display: grid;
+  padding: 20px;
+}
+
 .row{
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 2rem;
+  padding-top: 1rem;
   max-width: 100%;
   
 }
@@ -93,4 +102,28 @@ html{
 
 #button{
   padding-bottom: 1.5rem;
+  padding-top: 1.3rem;
 }
+
+.tabs {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+}
+
+.tabs button {
+  background-color: transparent;
+  border: none;
+  color: #AAA;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 10px;
+  width: 40%;
+  text-transform: uppercase;
+}
+
+.tabs button.active {
+  border-bottom: 3px solid rgb(34,193,195);
+  color:  rgb(34,193,195) ;
+}
+
