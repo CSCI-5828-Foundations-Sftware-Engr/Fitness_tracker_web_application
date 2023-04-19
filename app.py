@@ -10,7 +10,7 @@ api = Api(app)
 
 @app.route("/", methods=['post','get'])
 @app.route("/login", methods=['post','get'])
-def register():
+def login():
     if request.method == "POST":
         # get the request data
         print(request)
