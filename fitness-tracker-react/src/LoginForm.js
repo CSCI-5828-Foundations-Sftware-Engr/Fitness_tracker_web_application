@@ -16,7 +16,7 @@ const LoginForm = props => {
     const handleSubmit = async event => {
         event.preventDefault();
         try {
-            const response = await fetch(`http://localhost:5000/${activeTab.toLowerCase()}`, {
+            const response = await fetch(`/${activeTab.toLowerCase()}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -37,6 +37,7 @@ const LoginForm = props => {
         </div>
     );
 };
+
 
 const FormHeader = props => {
     return (
@@ -74,7 +75,6 @@ const SignupFormInput = props => (
     <div>
         <FormInput name="username" description="Username" placeholder="Enter Username" type="text" onChange={props.onChange} />
         <FormInput name="password" description="Password" placeholder="Enter Password" type="password" onChange={props.onChange} />
-        <FormInput name="fullname" description="Fullname" placeholder="Enter Fullname" type="text" onChange={props.onChange} />
         <FormInput name="email" description="Email" placeholder="Enter Email" type="email" onChange={props.onChange} />
         <FormInput name="contactNumber" description="Contact Number" placeholder="Enter Contact Number" type="number" onChange={props.onChange} />
         <FormButton title="Register" handleSubmit={props.handleSubmit} />
