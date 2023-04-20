@@ -1,4 +1,4 @@
-import logo from "./logo-transparent-svg.svg";
+import logo from "../logo-transparent-svg.svg";
 import React, { useState } from "react";
 
 const LoginForm = props => {
