@@ -1,8 +1,14 @@
 import { render, screen } from '@testing-library/react';
-import App from './App';
+import LoginForm from './Login/LoginForm';
 
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+test('renders login form component', () => {
+  render(<LoginForm />);
+});
+
+test('renders correct form header and active tab', () => {
+  render(<LoginForm />);
+  const formHeader = screen.getByText(/login/i);
+  const activeTab = screen.getByRole('button', { name: /login/i });
+  expect(formHeader).toBeInTheDocument();
+  expect(activeTab).toHaveClass('active');
 });
