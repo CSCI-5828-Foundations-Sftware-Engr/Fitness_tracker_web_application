@@ -32,7 +32,6 @@ def signup():
             fullname = data["fullname"]
             email = data["email"]
             password =  data["password"]
-            # password2 =  data["password2"]
             phone =   data["contactNumber"]
 
             # check the user and email in the documents of user_info collection from MongoDB
@@ -43,38 +42,18 @@ def signup():
             if user_found:
                 message = 'There already is a user by that name'
                 print(message)
-                #return render_template('pages-register.html', message=message)
-                #return send_from_directory(app.static_folder,'index.html')
 
             if email_found:
                 message = 'This email already exists in database'
                 print(message)
-                #return render_template('pages-register.html', message=message)
-                #return send_from_directory(app.static_folder,'index.html')
-
-            # if password1 != password2:
-                # message = 'Passwords should match! Try again'
-                # print(message)
-                #return render_template('pages-register.html', message=message)
-                #return send_from_directory(app.static_folder,'index.html')
             else:
                 hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
                 user_input = {'username': user, 'fullname': fullname, 'email': email, 'password': hashed, 'phone':phone}
                 print(user_input)
 
                 records.insert_one(user_input)
-                # New User, push the document to user_info collection
-                # session['email'] = email
-
-                #return render_template('index.html', user=user_input)
-                #return send_from_directory(app.static_folder,'index.html')
-
-        #return render_template('pages-register.html')
-        #return send_from_directory(app.static_folder,'index.html')
     except:
         print("Error observed!!")
-        # return render_template('error.html')
-        #return send_from_directory(app.static_folder,'index.html')
 
 # login page or routing for the first time
 def login_first():
@@ -91,23 +70,6 @@ def login_first():
 def login():
     message=''
     print("Called login")
-    # print(session)
-    # if "email" in session and session["email"]!="":
-    #     js_string = create_graph()
-    #     print(js_string)
-    #     recent_info=[]
-    #     time_now = datetime.now().strftime(fmt)
-    #     jobs = list(db.recent_info.find({"time":{'$lt':time_now}}).limit(10).sort('time', -1))
-    #     for job in jobs:
-    #         print(job["text"])
-    #         recent_activity = {}
-    #         recent_activity["time"] = delta_to_string(datetime.now() - datetime.strptime(job["time"], fmt))
-    #         recent_activity["text"] = job["text"]
-    #         recent_info.append(recent_activity)
-    #     user_found = records.find_one({"email": session["email"]})
-    #     user = {'name': user_found["name"], 'email': user_found["email"], 'password': user_found["password"], 'fullname': user_found["fullname"], 'country': user_found["country"], 'address':user_found["address"], 'phone':user_found["phone"] }
-    #     print(user)
-    #     return render_template('index.html', user=user, js=js_string, recents=recent_info)
     try:
         if request.method == "POST":
             data = request.get_json()
@@ -122,39 +84,11 @@ def login():
                 passwordcheck = user_found['password']
                 if bcrypt.checkpw(password.encode('utf-8'), passwordcheck):
                     print("Password matched")
-                    # session["email"] = user_found["email"]
-                    # user = {'username': user_found["name"], 'email': user_found["email"], 'password': user_found["password"], 'fullname': user_found["fullname"], 'country': user_found["country"], 'address':user_found["address"], 'phone':user_found["phone"] }
-                    # js_string = create_graph()
-                    # recent_info=[]
-                    # time_now = datetime.now().strftime(fmt)
-                    # jobs = list(db.recent_info.find({"time":{'$lt':time_now}}).limit(10).sort('time', -1))
-                    # for job in jobs:
-                    #     print(job["text"])
-                    #     recent_activity = {}
-                    #     recent_activity["time"] = delta_to_string(datetime.now() - datetime.strptime(job["time"], fmt))
-                    #     recent_activity["text"] = job["text"]
-                    #     recent_info.append(recent_activity)
-                    # return render_template('index.html', user=user, js=js_string, recents=recent_info)
-                   #return send_from_directory(app.static_folder,'index.html')
                 else:
-                    # if "email" in session:
-                    #     user_found = records.find_one({"email": session["email"]})
-                    #     user = {'name': user_found["name"], 'email': user_found["email"], 'password': user_found["password"], 'fullname': user_found["fullname"], 'country': user_found["country"], 'address':user_found["address"], 'phone':user_found["phone"] }
-                    #     print("else case")
-                    #     session["email"] = user_found["email"]
-                    #     return render_template('index.html', user=user)
                     message = 'Wrong password'
                     print("Wrong password")
-                    #return render_template('pages-login.html', message=message)
-                    #return send_from_directory(app.static_folder,'index.html')
             else:
                 message = 'User found'
                 print("User not found")
-                #return render_template('pages-login.html', message=message)
-                #return send_from_directory(app.static_folder,'index.html')
-        #return render_template('pages-login.html')
-        #return send_from_directory(app.static_folder,'index.html')
     except:
         print("Error observed!!")
-        #return render_template('error.html', message="Error found, please check and login again")
-        #return send_from_directory(app.static_folder,'index.html')
