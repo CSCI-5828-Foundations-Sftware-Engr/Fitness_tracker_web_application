@@ -56,25 +56,25 @@ def signup():
             phone =   data["contactNumber"]
 
             # check the user and email in the documents of user_info collection from MongoDB
-            user_found = register.find_one({"username": user})
-            email_found = register.find_one({"email": email})
-
+            user_found = register.find_one({"username": user})            
             if user_found:
                 message = 'There already is a user by that name'
                 print(message)
+                return {"code": 200, "message": message}
 
+            email_found = register.find_one({"email": email})
             if email_found:
                 message = 'This email already exists in database'
                 print(message)
+                return {"code": 200, "message": message}
             else:
                 hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
                 user_input = {'username': user, 'fullname': fullname, 'email': email, 'password': hashed, 'phone':phone}
                 print(user_input)
 
                 register.insert_one(user_input)
-            
-            message = 'Succesful write to register db'
-            return {"code": 200, "message": message}
+                message = 'Succesful write to register db'
+                return {"code": 200, "message": message}
         else:
             message = 'Received a non-Post request'
             return {"code": 404, "message": message}
@@ -117,6 +117,7 @@ def login():
 
 # Nutrition Log form
 # nutrition : <id, username, date, calorie_intake, Protein(%), Carbs(%), Fat(%)>     #
+@app.route('/nutrition', methods=['post','get'])
 def nutrition():
     message = ""
     try:
@@ -132,6 +133,12 @@ def nutrition():
             fat = data["fat"]
             water_intake = data['water_intake']
             
+            # user check
+            user_found = nutrition.find_one({"username": user})
+            if not user_found:
+                message = 'User not found'
+                return {"code": 200, "message": message}
+            
             # add this info to workout collection
             filter = {"username":user}
             nutrition_new_values = {"$set": { 'date': date, 'calorie_intake': calorie_intake, 'protein':protein, 'carbs':carbs, 'fat':fat,'water_intake':water_intake }}
@@ -144,19 +151,25 @@ def nutrition():
         else:
             message = 'Received a non-Post request'
             return {"code": 404, "message": message}
-
     except:
         message = "Error observed!!"
         return {"code":500, "message": message}
 
 # Workout Log form
 # workout   : <id, username, date, total_steps, calories_spent, weight_measured>
+@app.route('/workout', methods=['post','get'])
 def workout():
     message = ""
     try:
         if request.method == "POST":
             data = request.get_json()
             print(json.dumps(data, indent=4), session)
+
+            # user check
+            user_found = workout.find_one({"username": user})
+            if not user_found:
+                message = 'User not found'
+                return {"code": 200, "message": message}
 
             user = data["username"]
             date = data["date"]
@@ -183,6 +196,7 @@ def workout():
 
 # Profile Setup page
 # goal : <id, username, target_weight, calorie_goal, water_goal, steps_goal>
+@app.route('/goal_tracking', methods=['post','get'])
 def goal_tracking():
     message = ""
     try:
