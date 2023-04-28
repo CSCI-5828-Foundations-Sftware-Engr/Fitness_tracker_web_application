@@ -1,43 +1,25 @@
-from flask import Flask, jsonify, request, send_from_directory, render_template, session
+from flask import Flask, jsonify, request, send_from_directory
 from flask_restful import Api, Resource, reqparse
-from flask_cors import CORS #comment this on deployment
-import bcrypt, json, queue
-from pymongo.mongo_client import MongoClient
-from pymongo.server_api import ServerApi
 
+from flask_cors import CORS #comment this on deployment
 from api.HelloApiHandler import HelloApiHandler
+import json
 
 app = Flask(__name__, static_url_path='', static_folder='fitness-tracker-react/build')
-CORS(app)
 api = Api(app)
 
-api.add_resource(HelloApiHandler, '/flask/hello')
-
-#################################################################################################
-#                                             Schema                                            #
-# register  : <id, username, fullname, email, password, contactNumber, Age, Weight>             #
-# goal      : <id, username, target_weight, calorie_goal, water_goal, steps_goal>               #
-# nutrition : <id, username, date, calorie_intake, Protein(%), Carbs(%), Fat(%), water_intake>  #
-# workout   : <id, username, date, total_steps, calories_spent, weight_measured>                #
-#################################################################################################
-
-# Setting up the mongo driver
-#client = pymongo.MongoClient("mongodb://127.0.0.1:27017")
-uri = "mongodb+srv://fitness:fitness@cluster0.rzau3x9.mongodb.net/?retryWrites=true&w=majority"
-client = MongoClient(uri, server_api=ServerApi('1'))
-db = client.get_database('user_info')
-register = db.register
-nutrition = db.nutrition
-workout = db.workout
-goal = db.goal
-
-# login page or routing for the first time
-def login_first():
+@app.route("/", methods=['post','get'])
+@app.route("/login", methods=['post','get'])
+def login():
     if request.method == "POST":
         # get the request data
         print(request)
         data = request.get_json()
         print(json.dumps(data, indent=4))
+        # res = {"data" : {"calorie_intake": data['calorie_intake'], "calorie_burnt": data['calorie_burnt']}}
+        res ={"calorie_intake": data['calorie_intake'], "calorie_burnt": data['calorie_burnt']}
+        print(res)
+        return res
     else:
         return send_from_directory(app.static_folder,'index.html')
 
@@ -313,3 +295,4 @@ def workout_analysis():
     except:
         message = "Error observed!!"
         return {"code":500, "message": message}
+
