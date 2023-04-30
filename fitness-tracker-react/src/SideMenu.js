@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { FaRegUser, FaBullseye, FaUtensils, FaDumbbell, FaSignOutAlt} from 'react-icons/fa';
+import { useNavigate } from "react-router-dom";
 
 const SideMenu = () => {
+  const navigate = useNavigate();
   const [selectedOption, setSelectedOption] = useState('goal');
 
   const handleOptionClick = (option) => {
@@ -40,7 +42,13 @@ const SideMenu = () => {
       <li
         key={item.id}
         className={item.id === selectedOption ? 'selected' : item.id === 'logout' ? 'logout' : ''}
-        onClick={() => handleOptionClick(item.id)}
+        onClick={() =>  {
+            if (item.id === 'logout') {
+                navigate('/login');
+              } else {
+                handleOptionClick(item.id);
+              }
+        }}
       >
         {item.icon}
         <span>{item.label}</span>

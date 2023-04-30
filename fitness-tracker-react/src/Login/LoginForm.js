@@ -1,4 +1,4 @@
-import { Route, Routes, useNavigate } from "react-router-dom";
+import {useNavigate } from "react-router-dom";
 import logo from "../logo-transparent-svg.svg";
 import React, { useState } from "react";
 
