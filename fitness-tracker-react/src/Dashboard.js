@@ -1,6 +1,7 @@
 import Header from "./Header";
 import SideMenu from "./SideMenu";
 import GoalTracker from "./GoalTracker";
+import UserProfile from "./UserProfile";
 
 const Dashboard = () => {
     return (
@@ -8,7 +9,7 @@ const Dashboard = () => {
             <Header />
             <div class="dashComp">
                 <SideMenu />
-                <GoalTracker />
+                <UserProfile />
             </div>
             
         </div>
