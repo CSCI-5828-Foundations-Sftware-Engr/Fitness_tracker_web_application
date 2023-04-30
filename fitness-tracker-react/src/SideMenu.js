@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { FaRegUser, FaBullseye, FaUtensils, FaDumbbell, FaSignOutAlt} from 'react-icons/fa';
 import { useNavigate } from "react-router-dom";
+import GoalTracker from "./GoalTracker";
+import UserProfile from "./UserProfile";
+import Nutrition from "./UserProfile";
+import Workout from "./UserProfile";
 
 const SideMenu = () => {
   const navigate = useNavigate();
@@ -55,12 +59,30 @@ const SideMenu = () => {
       </li>
     ));
   };
+
+  const renderSelectedComponent = () => {
+    switch (selectedOption) {
+      case 'profile':
+        return <UserProfile />;
+      case 'goal':
+        return <GoalTracker />;
+      case 'nutrition':
+        return <Nutrition />;
+      case 'workout':
+        return <Workout />;
+      default:
+        return null;
+    }
+  };
   
   return (
+    <div class="dashComp">
     <div className="side-menu">
       <ul>
         {getMenuItems()}
-      </ul>
+      </ul>     
+    </div>
+    {renderSelectedComponent()}
     </div>
   );
 }

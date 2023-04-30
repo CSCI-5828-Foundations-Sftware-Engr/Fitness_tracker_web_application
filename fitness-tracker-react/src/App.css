@@ -225,7 +225,7 @@ html {
 .side-menu ul li.logout {
   color: red;
   cursor: pointer;
-  margin-top: 250px;
+  margin-top: 400px;
 }
 
 .dashComp {
@@ -268,13 +268,6 @@ html {
     border: 1px solid #ccc;
     border-radius: 4px;
 }
-  /* display: block;
-  width: 100%;
-  padding: 6px 8px;
-  margin-top: 4px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-} */
 
 .goal-tracker-form button {
   display: block;
