@@ -30,7 +30,11 @@ const LoginForm = props => {
         } catch (error) {
             console.error(error);
         }
-        navigate('/dashboard');
+        navigate('dashboard', {
+            state: {
+              ...formData
+            }
+          });
     };
 
     return (

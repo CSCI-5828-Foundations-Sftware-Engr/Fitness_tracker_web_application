@@ -1,11 +1,13 @@
 import Header from "./Header";
 import SideMenu from "./SideMenu";
-import GoalTracker from "./GoalTracker";
+import { useLocation } from 'react-router-dom';
 
 const Dashboard = () => {
+    const location = useLocation();
+    const user = location.state;
     return (
         <div class="dashboard">
-            <Header />         
+            <Header user={user} />         
             <SideMenu />
         </div>
         
