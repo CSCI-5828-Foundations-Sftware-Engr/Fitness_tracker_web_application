@@ -1,9 +1,11 @@
+import { Route, Routes, useNavigate } from "react-router-dom";
 import logo from "../logo-transparent-svg.svg";
 import React, { useState } from "react";
 
 const LoginForm = props => {
     const [activeTab, setActiveTab] = useState('login');
     const [formData, setFormData] = useState({});
+    const navigate = useNavigate();
 
     const handleTabChange = tab => {
         setActiveTab(tab);
@@ -28,6 +30,7 @@ const LoginForm = props => {
         } catch (error) {
             console.error(error);
         }
+        navigate('/dashboard');
     };
 
     return (
@@ -88,7 +91,7 @@ const FormButton = props => {
     return (
         <div>
             <form onSubmit={props.handleSubmit}>
-                <div id="button" class="row">
+                <div id="button" className="row">
                     <button>{props.title}</button>
                 </div>
             </form>
@@ -97,7 +100,7 @@ const FormButton = props => {
 };
 
 const FormInput = props => (
-    <div class="row">
+    <div className="row">
         <label>{props.description}</label>
         <input type={props.type} name={props.name} placeholder={props.placeholder} onChange={props.onChange} />
     </div>
