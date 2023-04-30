@@ -3,8 +3,8 @@ import { FaRegUser, FaBullseye, FaUtensils, FaDumbbell, FaSignOutAlt} from 'reac
 import { useNavigate } from "react-router-dom";
 import GoalTracker from "./GoalTracker";
 import UserProfile from "./UserProfile";
-import Nutrition from "./UserProfile";
-import Workout from "./UserProfile";
+import Nutrition from "./Nutrition";
+import Workout from "./Workout";
 
 const SideMenu = () => {
   const navigate = useNavigate();
@@ -26,15 +26,15 @@ const SideMenu = () => {
         label: 'Goal Tracking'
       },
       {
-        id: 'nutrition',
-        icon: <FaUtensils />,
-        label: 'Nutrition'
-      },
-      {
         id: 'workout',
         icon: <FaDumbbell />,
         label: 'Workout'
       },
+      {
+        id: 'nutrition',
+        icon: <FaUtensils />,
+        label: 'Nutrition'
+      }, 
       {
         id: 'logout',
         icon: <FaSignOutAlt />,
@@ -76,7 +76,7 @@ const SideMenu = () => {
   };
   
   return (
-    <div class="dashComp">
+    <div class="dashboard-components">
     <div className="side-menu">
       <ul>
         {getMenuItems()}
