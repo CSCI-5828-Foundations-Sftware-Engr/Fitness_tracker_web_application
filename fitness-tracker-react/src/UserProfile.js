@@ -26,6 +26,9 @@ const UserProfile = (props) => {
       <p>{user?.username}</p>
       <p>{user?.email}</p>
       <p>{user?.contactNumber}</p>
+      <p data-testid="user-name">{user?.username}</p>
+      <p data-testid="user-email">{user?.email}</p>
+      <p data-testid="user-contact-number">{user?.contactNumber}</p>
 
       <h3>Update Password</h3>
       <form className="update-password-form" onSubmit={handlePasswordUpdate}>
