@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
-const Nutrition = (props) => {
-    const [calorieIntake, setCalorieIntake] = useState('');
-    const [proteins, setProteins] = useState('');
+const Nutrition = () => {
+    const location = useLocation();
+    const user = location.state;
+    const username = user.username
+    const [calorie_intake, setCalorieIntake] = useState('');
+    const [protein, setProteins] = useState('');
     const [carbs, setCarbs] = useState('');
     const [fat, setFat] = useState('');
-    const [water, setWater] = useState('');
+    const [water_intake, setWater] = useState('');
+    const [date, setCurrentDate] = useState(new Date().toLocaleDateString('en-CA'));
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -16,11 +21,13 @@ const Nutrition = (props) => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-               calorieIntake,
-               proteins,
-               carbs,
-               fat,
-               water
+                username,
+                date,
+                calorie_intake,
+                protein,
+                carbs,
+                fat,
+                water_intake
             }),
         })
             .then((response) => {
@@ -38,23 +45,23 @@ const Nutrition = (props) => {
             <h2>Enter Today's Nutrition Details </h2>
             <form className="nutrition-form" onSubmit={handleSubmit}>
                 <div class="row">
-                    <label htmlFor="calorieIntake">Calorie Intake:</label>
+                    <label htmlFor="calorie_intake">Calorie Intake:</label>
                     <input
-                        id="calorieIntake"
+                        id="calorie_intake"
                         placeholder="Enter Calories"
                         type="number"
-                        value={calorieIntake}
+                        value={calorie_intake}
                         onChange={(e) => setCalorieIntake(e.target.value)}
                     />
                 </div>
 
                 <div class="row">
-                    <label htmlFor="proteins">Proteins(%):</label>
+                    <label htmlFor="protein">Protein(%):</label>
                     <input
-                        id="proteins"
-                        placeholder="Enter Proteins"
+                        id="protein"
+                        placeholder="Enter Protein"
                         type="number"
-                        value={proteins}
+                        value={protein}
                         onChange={(e) => setProteins(e.target.value)}
                     />
                 </div>
@@ -82,12 +89,12 @@ const Nutrition = (props) => {
                 </div>
 
                 <div class="row">
-                    <label htmlFor="water">Water Intake:</label>
+                    <label htmlFor="water_intake">Water Intake:</label>
                     <input
-                        id="water"
+                        id="water_intake"
                         placeholder="Enter Intake"
-                        type="water"
-                        value={water}
+                        type="number"
+                        value={water_intake}
                         onChange={(e) => setWater(e.target.value)}
                     />
                 </div>

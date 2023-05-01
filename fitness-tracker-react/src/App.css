@@ -267,7 +267,7 @@ html {
 
 .goal-tracker-form {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 35px;
   width: 100%;
 }
@@ -292,7 +292,7 @@ html {
   display: grid;
   width: 40%;
   padding: 8px;
-  margin: 10px 80px 10px 300px;
+  margin: 10px 80px 10px 400px;
   background: linear-gradient(90deg, rgba(34, 193, 195, 1) 0%, rgba(253, 187, 45, 1) 100%);
   color: #fff;
   font-weight: bold;

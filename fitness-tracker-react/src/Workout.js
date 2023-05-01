@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
-const Workout = (props) => {
-    const [totalSteps, setTotalSteps] = useState('');
-    const [caloriesSpent, setCaloriesSpent] = useState('');
-    const [weight, setWeight] = useState('');
+const Workout = () => {
+    const location = useLocation();
+    const user = location.state;
+    const username = user.username
+    const [total_steps, setTotalSteps] = useState('');
+    const [calories_spent, setCaloriesSpent] = useState('');
+    const [weight_measured, setWeight] = useState('');
+    const [date, setCurrentDate] = useState(new Date().toLocaleDateString('en-CA'));
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -14,9 +19,11 @@ const Workout = (props) => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                totalSteps,
-                caloriesSpent,
-                weight
+                username,
+                date,
+                total_steps,
+                calories_spent,
+                weight_measured
             }),
         })
             .then((response) => {
@@ -34,34 +41,34 @@ const Workout = (props) => {
             <h2>Enter Today's Workout Details </h2>
             <form className="workout-form" onSubmit={handleSubmit}>
                 <div class="row">
-                    <label htmlFor="totalSteps">Total Steps:</label>
+                    <label htmlFor="total_steps">Total Steps:</label>
                     <input
-                        id="totalSteps"
+                        id="total_steps"
                         placeholder="Enter Steps"
                         type="number"
-                        value={totalSteps}
+                        value={total_steps}
                         onChange={(e) => setTotalSteps(e.target.value)}
                     />
                 </div>
 
                 <div class="row">
-                    <label htmlFor="caloriesSpent">Calories Spent:</label>
+                    <label htmlFor="calories_spent">Calories Spent:</label>
                     <input
-                        id="caloriesSpent"
+                        id="calories_spent"
                         placeholder="Enter Calories"
                         type="number"
-                        value={caloriesSpent}
+                        value={calories_spent}
                         onChange={(e) => setCaloriesSpent(e.target.value)}
                     />
                 </div>
 
                 <div class="row">
-                    <label htmlFor="weight">Weight:</label>
+                    <label htmlFor="weight_measured">Weight:</label>
                     <input
-                        id="weight"
+                        id="weight_measured"
                         placeholder="Enter Weight"
                         type="number"
-                        value={weight}
+                        value={weight_measured}
                         onChange={(e) => setWeight(e.target.value)}
                     />
                 </div>
