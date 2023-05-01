@@ -9,13 +9,13 @@ from flask_restful import Api
 from flask_cors import CORS #comment this on deployment
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
-
+from prometheus_client import Counter
 #from api.HelloApiHandler import HelloApiHandler
 
 app = Flask(__name__, static_url_path='', static_folder='fitness-tracker-react/build')
 CORS(app)
 api = Api(app)
-
+counter_signups = Counter('signups_total', 'Total number of signups')
 #api.add_resource(HelloApiHandler, '/flask/hello')
 
 #################################################################################################
@@ -86,6 +86,7 @@ def signup():
                 print(user_input)
 
                 register_db.insert_one(user_input)
+                counter_signups.inc()
                 message = 'Succesful write to register db'
                 return {"code": 200, "message": message}
         else:
