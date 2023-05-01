@@ -305,6 +305,7 @@ def nutrition_analysis():
 def workout_analysis():
     '''
         chart: id, steps, calories, weight
+        target: {steps_goal, target_weight, calorie_burn_goal}, data : {date, total_steps, target_weight, calorie_burn_goal} 
     '''
     message = ""
     try:
