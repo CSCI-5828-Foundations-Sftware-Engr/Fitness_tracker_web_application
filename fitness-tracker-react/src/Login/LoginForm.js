@@ -1,4 +1,4 @@
-import {useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import logo from "../logo-transparent-svg.svg";
 import React, { useState } from "react";
 
@@ -18,7 +18,7 @@ const LoginForm = props => {
     const handleSubmit = async event => {
         event.preventDefault();
         try {
-            const response = await fetch(`http://localhost:5000//${activeTab.toLowerCase()}`, {
+            const response = await fetch(`http://127.0.0.1:5000/${activeTab.toLowerCase()}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -26,15 +26,19 @@ const LoginForm = props => {
                 body: JSON.stringify(formData)
             });
             const data = await response.json();
-            console.log(data);
+            if (data.message === "Password matched") {
+                navigate('dashboard', {
+                    state: {
+                        ...formData
+                    }
+                });
+            }
+            else {
+
+            }
         } catch (error) {
             console.error(error);
         }
-        navigate('dashboard', {
-            state: {
-              ...formData
-            }
-          });
     };
 
     return (

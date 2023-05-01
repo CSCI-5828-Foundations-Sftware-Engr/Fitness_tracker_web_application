@@ -48,7 +48,7 @@ const SideMenu = () => {
         className={item.id === selectedOption ? 'selected' : item.id === 'logout' ? 'logout' : ''}
         onClick={() =>  {
             if (item.id === 'logout') {
-                navigate('/login');
+                navigate('/');
               } else {
                 handleOptionClick(item.id);
               }

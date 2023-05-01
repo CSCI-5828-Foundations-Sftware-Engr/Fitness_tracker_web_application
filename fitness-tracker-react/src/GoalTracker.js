@@ -8,11 +8,37 @@ const GoalTracker = () => {
   const [targetSteps, setTargetSteps] = useState('');
   const [targetDistance, setTargetDistance] = useState('');
   const [waterGoal, setWaterGoal] = useState('');
+  const [caloriesGoal, setCaloriesGoal] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // You can handle the form submission logic here
+  
+    fetch('http://127.0.0.1:5000/goal_tracking', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        currentWeight,
+        targetWeight,
+        age,
+        height,
+        targetSteps,
+        targetDistance,
+        waterGoal,
+        caloriesGoal,
+      }),
+    })
+      .then((response) => {
+        // Handle the response from the API
+        console.log(response);
+      })
+      .catch((error) => {
+        // Handle errors
+        console.error(error);
+      });
   };
+  
 
   return (
     <div className="goal-tracker-container">
@@ -101,8 +127,8 @@ const GoalTracker = () => {
             id="caloriesGoal"
             placeholder="Enter Calories"
             type="number"
-            value={waterGoal}
-            onChange={(e) => setWaterGoal(e.target.value)}
+            value={caloriesGoal}
+            onChange={(e) => setCaloriesGoal(e.target.value)}
           />
         </div>
 
