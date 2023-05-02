@@ -13,6 +13,7 @@ from prometheus_client import Counter
 #from api.HelloApiHandler import HelloApiHandler
 
 app = Flask(__name__, static_url_path='', static_folder='fitness-tracker-react/build')
+app.debug = True
 CORS(app)
 api = Api(app)
 counter_signups = Counter('signups_total', 'Total number of signups')
@@ -61,10 +62,9 @@ def signup():
             print(json.dumps(data, indent=4))
 
             user = data["username"]
-            fullname = data["fullname"]
             email = data["email"]
-            password =  data["password"]
-            phone =   data["contactNumber"]
+            password = data["password"]
+            phone = data["contactNumber"]
 
             # check the user and email in the documents of user_info collection from MongoDB
             user_found = register_db.find_one({"username": user})
@@ -81,12 +81,17 @@ def signup():
             else:
                 hashed = bcrypt.hashpw(password.encode('utf-8'),
                                        bcrypt.gensalt())
-                user_input = {'username': user, 'fullname': fullname, 'email': email,
+                user_input = {'username': user, 'email': email,
                               'password': hashed, 'phone':phone}
                 print(user_input)
 
                 register_db.insert_one(user_input)
                 counter_signups.inc()
+                #print(counter_signups)
+                # Get the current value of the counter
+                counter_value = counter_signups._value.get()
+                print(f"Current value of counter: {counter_value}")
+
                 message = 'Succesful write to register db'
                 return {"code": 200, "message": message}
         else:
@@ -96,6 +101,20 @@ def signup():
         message = "Error observed!!"
         return {"code":500, "message": message}
 
+@app.route('/logout', methods=['post','get'])
+def logout(user=""):
+    #print(session)
+    #session["email"]=""
+    message=''
+    print("Called sign out")
+    try:
+        if request.method == "POST":
+            message = "Received post message"
+            return {"code":500, "message": message}
+        message = "Received non-post message"
+        return {"code":500, "message": message}
+    except:
+        return {"code":500, "message": message}
 
 @app.route('/', methods=['post','get'])
 @app.route('/login', methods=['post','get'])
@@ -137,7 +156,16 @@ def login():
 def nutrition():
     '''
         Nutrition Log form
-        nutrition : <id, username, date, calorie_intake, Protein(%), Carbs(%), Fat(%)>     #
+        nutrition : <id, username, date, calorie_intake, water_intake, Protein(%), Carbs(%), Fat(%)>
+        eg: {
+            "username": "pavit",
+            "date":"05/01/2023",
+            "calorie_intake":"3241",
+            "protein":"40",
+            "carbs":"40",
+            "fat":"20",
+            "water_intake":"5"
+            }
     '''
     message = ""
     try:
@@ -154,17 +182,24 @@ def nutrition():
             water_intake = data['water_intake']
             
             # user check
-            user_found = nutrition_db.find_one({"username": user})
+            username_filter = {"username":user}
+            user_found = register_db.find_one(username_filter)
             if not user_found:
                 message = 'User not found'
                 return {"code": 200, "message": message}
             
-            # add this info to workout collection
-            username_filter = {"username":user}
+            # add this info to nutrition collection
+            nutrition_user_found = nutrition_db.find_one(username_filter)
+            if not nutrition_user_found:
+                nutrition_input = {"username": user, "date": date,
+                                   "calorie_intake":calorie_intake, "protein":protein, "carbs":carbs,
+                                    "fat":fat,"water_intake":water_intake}
+                nutrition_db.insert_one(nutrition_input)
+                return {"code": 200, "message": "Succesful new user write to Nutrition db"}
+            
             nutrition_new_values = {"$set": { 'date': date, 'calorie_intake': calorie_intake,
                                              'protein':protein, 'carbs':carbs,
                                              'fat':fat,'water_intake':water_intake}}
-
             # update collections accordingly
             nutrition_db.update_one(username_filter, nutrition_new_values)
 
@@ -182,6 +217,13 @@ def workout():
     ''' 
         Workout Log form
         workout   : <id, username, date, total_steps, calories_spent, weight_measured>
+        eg: {
+            "username": "pavit",
+            "date": "05/01/2023",
+            "total_steps":"2312",
+            "calories_spent":"1232",
+            "weight_measured":"183"
+            }
     '''
     message = ""
     try:
@@ -189,21 +231,31 @@ def workout():
             data = request.get_json()
             print(json.dumps(data, indent=4), session)
 
-            # user check
-            user_found = workout_db.find_one({"username": user})
-            if not user_found:
-                message = 'User not found'
-                return {"code": 200, "message": message}
-
             user = data["username"]
             date = data["date"]
             total_steps = data["total_steps"]
             calories_spent = data["calories_spent"]
             weight_measured = data["weight_measured"]
             
-            # add this info to workout collection
+            # user check
             username_filter = {"username":user}
-            workout_new_values = {"$set": { 'date': date, 'total_steps': total_steps, 'calories_spent':calories_spent, 'weight_measured':weight_measured  }}
+            user_found = register_db.find_one(username_filter)
+            if not user_found:
+                message = 'User not found'
+                return {"code": 200, "message": message}
+            
+            # add this info to workout collection
+            workout_user_found = workout_db.find_one(username_filter)
+            if not workout_user_found:
+                workout_input = {"username": user, "date": date,
+                                   "total_steps":total_steps, "calories_spent":calories_spent,
+                                   "weight_measured":weight_measured}
+                workout_db.insert_one(workout_input)
+                return {"code": 200, "message": "Succesful new user write to Workout db"}
+            
+            workout_new_values = {"$set": { 'date': date, 'total_steps': total_steps,
+                                           'calories_spent':calories_spent,
+                                           'weight_measured':weight_measured  }}
 
             # update collections accordingly
             workout_db.update_one(username_filter, workout_new_values)
@@ -245,9 +297,40 @@ def goal_tracking():
             # add current weight, age and height to register || other info to goal 
             username_filter = {"username":user}
             register_new_values = {"$set": { 'current_weight': current_weight, 'age': age, 'height':height }}
-            goal_new_values = {"$set": { 'target_weight': target_weight, 'steps_goal': steps_goal, 'water_goal':water_goal, 'calorie_burn_goal':calorie_burn_goal, 'calorie_intake_goal':calorie_intake_goal,'protein_goal':protein_goal,'carbs_goal':carbs_goal, 'fat_goal':fat_goal}}
+            
+            # user check
+            user_found = register_db.find_one(username_filter)
+            if not user_found:
+                message = 'User not found'
+                return {"code": 200, "message": message}
+            
+            # add this info to workout collection
+            goal_user_found = goal_db.find_one(username_filter)
+            if not goal_user_found:
+                goal_input = {  'username':user,
+                                'target_weight': target_weight,
+                                'steps_goal': steps_goal,
+                                'water_goal':water_goal,
+                                'calorie_burn_goal':calorie_burn_goal,
+                                'calorie_intake_goal':calorie_intake_goal,
+                                'protein_goal':protein_goal,
+                                'carbs_goal':carbs_goal,
+                                'fat_goal':fat_goal
+                            } 
+                goal_db.insert_one(goal_input)
+                return {"code": 200, "message": "Succesful new user write to Goal db"}            
 
             # update collections accordingly
+            goal_new_values = {"$set": { 'target_weight': target_weight,
+                                        'steps_goal': steps_goal,
+                                        'water_goal':water_goal,
+                                        'calorie_burn_goal':calorie_burn_goal,
+                                        'calorie_intake_goal':calorie_intake_goal,
+                                        'protein_goal':protein_goal,
+                                        'carbs_goal':carbs_goal,
+                                        'fat_goal':fat_goal
+                                        }
+                                }
             register_db.update_one(username_filter, register_new_values)
             goal_db.update_one(username_filter, goal_new_values)
 
@@ -261,6 +344,7 @@ def goal_tracking():
         message = "Error observed!!"
         return {"code":500, "message": message}
     
+@app.route('/nutrition_analysis', methods=['post','get'])
 def nutrition_analysis():
     '''
         target: {calories, protein, carbs, fat, water_goal}, data : {date, calories, protein, carbs, fat, water_intake} 
@@ -303,6 +387,7 @@ def nutrition_analysis():
         message = "Error observed!!"
         return {"code":500, "message": message}
 
+@app.route('/workout_analysis', methods=['post','get'])
 def workout_analysis():
     '''
         chart: id, steps, calories, weight
