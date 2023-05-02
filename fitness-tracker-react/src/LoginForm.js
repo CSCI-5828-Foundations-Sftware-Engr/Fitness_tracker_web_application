@@ -16,7 +16,7 @@ const LoginForm = props => {
     const handleSubmit = async event => {
         event.preventDefault();
         try {
-            const response = await fetch(`http://localhost:5000//${activeTab.toLowerCase()}`, {
+            const response = await fetch(`https://fitness-tracker-staging.herokuapp.com/${activeTab.toLowerCase()}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
