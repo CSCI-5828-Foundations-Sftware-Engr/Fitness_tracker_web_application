@@ -4,12 +4,13 @@ Back end code for fitness tracker application
 import json
 import bcrypt
 
-from flask import Flask, request, send_from_directory, session
+from flask import Flask, Response, request, send_from_directory, session
 from flask_restful import Api
 from flask_cors import CORS #comment this on deployment
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 from prometheus_client import Counter
+from prometheus_client import generate_latest, CONTENT_TYPE_LATEST
 #from api.HelloApiHandler import HelloApiHandler
 
 app = Flask(__name__, static_url_path='', static_folder='fitness-tracker-react/build')
@@ -36,6 +37,10 @@ register_db = db.register
 nutrition_db = db.nutrition
 workout_db = db.workout
 goal_db = db.goal
+
+@app.route('/metrics')
+def metrics():
+    return Response(generate_latest(), mimetype=CONTENT_TYPE_LATEST)
 
 def login_first():
     '''
