@@ -44,6 +44,7 @@ _OLD_VIRTUAL_PATH="$PATH"
 PATH="$VIRTUAL_ENV/bin:$PATH"
 export PATH
 export PYTHONPATH="./"
+export FLASK_DEBUG=true
 
 # unset PYTHONHOME if set
 # this will fail if PYTHONHOME is set to the empty string (which is bad anyway)
