@@ -146,8 +146,7 @@ def login():
                 message = 'User not found'
                 return {"code": 404, "message": message}
         else:
-            message = 'Received a non-Post request'
-            return {"code": 404, "message": message}
+            return send_from_directory(app.static_folder,'index.html')
     except:
         message = "Error observed!!"
         return {"code":500, "message": message}
