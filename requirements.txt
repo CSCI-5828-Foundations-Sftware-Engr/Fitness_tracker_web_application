@@ -1,3 +1,4 @@
+gunicorn
 aniso8601==9.0.1
 astroid==2.15.4
 bcrypt==4.0.1
@@ -25,6 +26,7 @@ packaging==23.1
 pipreqs==0.4.13
 platformdirs==3.5.0
 pluggy==1.0.0
+prometheus-client==0.16.0
 pyenchant==3.2.2
 pylint==2.17.3
 pymongo==4.3.3
