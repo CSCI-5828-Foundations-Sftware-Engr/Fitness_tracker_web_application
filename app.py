@@ -13,6 +13,7 @@ from prometheus_client import Counter
 #from api.HelloApiHandler import HelloApiHandler
 
 app = Flask(__name__, static_url_path='', static_folder='fitness-tracker-react/build')
+app.debug = True
 CORS(app)
 api = Api(app)
 counter_signups = Counter('signups_total', 'Total number of signups')
@@ -61,10 +62,9 @@ def signup():
             print(json.dumps(data, indent=4))
 
             user = data["username"]
-            fullname = data["fullname"]
             email = data["email"]
-            password =  data["password"]
-            phone =   data["contactNumber"]
+            password = data["password"]
+            phone = data["contactNumber"]
 
             # check the user and email in the documents of user_info collection from MongoDB
             user_found = register_db.find_one({"username": user})
@@ -81,12 +81,17 @@ def signup():
             else:
                 hashed = bcrypt.hashpw(password.encode('utf-8'),
                                        bcrypt.gensalt())
-                user_input = {'username': user, 'fullname': fullname, 'email': email,
+                user_input = {'username': user, 'email': email,
                               'password': hashed, 'phone':phone}
                 print(user_input)
 
                 register_db.insert_one(user_input)
                 counter_signups.inc()
+                #print(counter_signups)
+                # Get the current value of the counter
+                counter_value = counter_signups._value.get()
+                print(f"Current value of counter: {counter_value}")
+
                 message = 'Succesful write to register db'
                 return {"code": 200, "message": message}
         else:
@@ -294,7 +299,6 @@ def goal_tracking():
             register_new_values = {"$set": { 'current_weight': current_weight, 'age': age, 'height':height }}
             
             # user check
-            username_filter = {"username":user}
             user_found = register_db.find_one(username_filter)
             if not user_found:
                 message = 'User not found'
@@ -303,11 +307,30 @@ def goal_tracking():
             # add this info to workout collection
             goal_user_found = goal_db.find_one(username_filter)
             if not goal_user_found:
-                goal_new_values = {"$set": { 'target_weight': target_weight, 'steps_goal': steps_goal, 'water_goal':water_goal, 'calorie_burn_goal':calorie_burn_goal, 'calorie_intake_goal':calorie_intake_goal,'protein_goal':protein_goal,'carbs_goal':carbs_goal, 'fat_goal':fat_goal}}
-                workout_db.insert_one(goal_input)
-                return {"code": 200, "message": "Succesful new user write to Workout db"}            
+                goal_input = {  'username':user,
+                                'target_weight': target_weight,
+                                'steps_goal': steps_goal,
+                                'water_goal':water_goal,
+                                'calorie_burn_goal':calorie_burn_goal,
+                                'calorie_intake_goal':calorie_intake_goal,
+                                'protein_goal':protein_goal,
+                                'carbs_goal':carbs_goal,
+                                'fat_goal':fat_goal
+                            } 
+                goal_db.insert_one(goal_input)
+                return {"code": 200, "message": "Succesful new user write to Goal db"}            
 
             # update collections accordingly
+            goal_new_values = {"$set": { 'target_weight': target_weight,
+                                        'steps_goal': steps_goal,
+                                        'water_goal':water_goal,
+                                        'calorie_burn_goal':calorie_burn_goal,
+                                        'calorie_intake_goal':calorie_intake_goal,
+                                        'protein_goal':protein_goal,
+                                        'carbs_goal':carbs_goal,
+                                        'fat_goal':fat_goal
+                                        }
+                                }
             register_db.update_one(username_filter, register_new_values)
             goal_db.update_one(username_filter, goal_new_values)
 
