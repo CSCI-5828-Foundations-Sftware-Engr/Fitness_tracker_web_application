@@ -1,3 +1,4 @@
+gunicorn
 aniso8601==9.0.1
 astroid==2.15.4
 bcrypt==4.0.1
