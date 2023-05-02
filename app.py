@@ -159,7 +159,7 @@ def nutrition():
         nutrition : <id, username, date, calorie_intake, water_intake, Protein(%), Carbs(%), Fat(%)>
         eg: {
             "username": "pavit",
-            "date":"05/01/2023",
+            "date": "2023-05-01",
             "calorie_intake":"3241",
             "protein":"40",
             "carbs":"40",
@@ -189,7 +189,8 @@ def nutrition():
                 return {"code": 200, "message": message}
             
             # add this info to nutrition collection
-            nutrition_user_found = nutrition_db.find_one(username_filter)
+            nutrition_filter = {"username":user, "date":date}
+            nutrition_user_found = nutrition_db.find_one(nutrition_filter)
             if not nutrition_user_found:
                 nutrition_input = {"username": user, "date": date,
                                    "calorie_intake":calorie_intake, "protein":protein, "carbs":carbs,
@@ -219,7 +220,7 @@ def workout():
         workout   : <id, username, date, total_steps, calories_spent, weight_measured>
         eg: {
             "username": "pavit",
-            "date": "05/01/2023",
+            "date": "2023-05-01",
             "total_steps":"2312",
             "calories_spent":"1232",
             "weight_measured":"183"
@@ -245,7 +246,8 @@ def workout():
                 return {"code": 200, "message": message}
             
             # add this info to workout collection
-            workout_user_found = workout_db.find_one(username_filter)
+            workout_filter = {"username":user, "date":date}
+            workout_user_found = workout_db.find_one(workout_filter)
             if not workout_user_found:
                 workout_input = {"username": user, "date": date,
                                    "total_steps":total_steps, "calories_spent":calories_spent,
@@ -331,6 +333,7 @@ def goal_tracking():
                                         'fat_goal':fat_goal
                                         }
                                 }
+            
             register_db.update_one(username_filter, register_new_values)
             goal_db.update_one(username_filter, goal_new_values)
 
@@ -358,12 +361,15 @@ def nutrition_analysis():
             user = data['username']
             
             # add current weight, age and height to register || other info to goal 
-            response_data = {}
-            response_data['target'] = {}
-            response_data['data'] = {}
+            response_data = {'target':{}, 'data':[]}
 
             # return the target data
             user_goal = goal_db.find_one({'username': user})
+            if not user_goal:
+                message = 'User not found at goal db'
+                return {"code": 200, "message": message}
+            
+            print(user_goal)
             response_data['target']['calorie_intake_goal'] = user_goal['calorie_intake_goal']
             response_data['target']['protein_goal'] = user_goal['protein_goal']
             response_data['target']['fat_goal'] = user_goal['fat_goal']
@@ -371,12 +377,21 @@ def nutrition_analysis():
             response_data['target']['water_goal'] = user_goal['water_goal']
 
             # return the current data
-            user_nutrition = nutrition_db.find_one({'username': user})
-            response_data['data']['calorie_intake'] = user_nutrition['calorie_intake']
-            response_data['data']['protein'] = user_goal['protein']
-            response_data['data']['fat'] = user_goal['fat']
-            response_data['data']['carbs'] = user_goal['carbs']
-            response_data['data']['water_intake'] = user_goal['water_intake']
+            user_nutritions = list(nutrition_db.find({'username': user}))
+            if len(user_nutritions) == 0:
+                message = 'User not found at nutrition db'
+                return {"code": 200, "message": message}
+            
+            print(user_nutritions)
+            response_data['data'] = []
+            for user_nutrition in user_nutritions:
+                response_data['data'].append({'date' : user_nutrition['date'],
+                                'calorie_intake' : user_nutrition['calorie_intake'],
+                                'protein' : user_nutrition['protein'],
+                                'fat' : user_nutrition['fat'],
+                                'carbs' : user_nutrition['carbs'],
+                                'water_intake' : user_nutrition['water_intake']})
+            print("Reached here!!")
 
             message = "Succesful retrieval of Nutrition Analysis data"
             return {"code": 200, "message": message, "data": response_data}
@@ -402,9 +417,7 @@ def workout_analysis():
             user = data['username']
             
             # add current weight, age and height to register || other info to goal 
-            response_data = {}
-            response_data['target'] = {}
-            response_data['data'] = {}
+            response_data = {'target':{}, 'data':[]}
 
             # return the target data
             user_goal = goal_db.find_one({'username': user})
@@ -413,10 +426,17 @@ def workout_analysis():
             response_data['target']['calorie_burn_goal'] = user_goal['calorie_burn_goal']
 
             # return the current data
-            user_nutrition = workout_db.find_one({'username': user})
-            response_data['data']['total_steps'] = user_nutrition['total_steps']
-            response_data['data']['weight_measured'] = user_goal['weight_measured']
-            response_data['data']['calories_spent'] = user_goal['calories_spent']
+            user_workouts = list(workout_db.find({'username': user}))
+            if len(user_workouts) == 0:
+                message = 'User not found at workout db'
+                return {"code": 200, "message": message}
+            
+            for user_workout in user_workouts:
+                print(user_workout)
+                response_data['data'].append({'date' : user_workout['date'],
+                                'total_steps' : user_workout['total_steps'],
+                                'weight_measured' : user_workout['weight_measured'],
+                                'calories_spent' : user_workout['calories_spent']})
 
             message = "Succesful retrieval of Workout Analysis data"
             return {"code": 200, "message": message, "data": response_data}
