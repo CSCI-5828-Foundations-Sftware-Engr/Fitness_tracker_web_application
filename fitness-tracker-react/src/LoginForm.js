@@ -1,9 +1,11 @@
+import { useNavigate } from "react-router-dom";
 import logo from "./logo-transparent-svg.svg";
 import React, { useState } from "react";
 
 const LoginForm = props => {
     const [activeTab, setActiveTab] = useState('login');
     const [formData, setFormData] = useState({});
+    const navigate = useNavigate();
 
     const handleTabChange = tab => {
         setActiveTab(tab);
@@ -16,7 +18,7 @@ const LoginForm = props => {
     const handleSubmit = async event => {
         event.preventDefault();
         try {
-            const response = await fetch(`http://localhost:5000//${activeTab.toLowerCase()}`, {
+            const response = await fetch(`https://fitness-tracker-staging.herokuapp.com/${activeTab.toLowerCase()}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -24,7 +26,16 @@ const LoginForm = props => {
                 body: JSON.stringify(formData)
             });
             const data = await response.json();
-            console.log(data);
+            if (data.message === "Password matched") {
+                navigate('dashboard', {
+                    state: {
+                        ...formData
+                    }
+                });
+            }
+            else {
+                alert("Invalid username or password");
+            }
         } catch (error) {
             console.error(error);
         }
@@ -88,7 +99,7 @@ const FormButton = props => {
     return (
         <div>
             <form onSubmit={props.handleSubmit}>
-                <div id="button" class="row">
+                <div id="button" className="row">
                     <button>{props.title}</button>
                 </div>
             </form>
@@ -97,7 +108,7 @@ const FormButton = props => {
 };
 
 const FormInput = props => (
-    <div class="row">
+    <div className="row">
         <label>{props.description}</label>
         <input type={props.type} name={props.name} placeholder={props.placeholder} onChange={props.onChange} />
     </div>

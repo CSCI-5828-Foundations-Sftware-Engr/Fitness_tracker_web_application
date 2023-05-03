@@ -10,7 +10,10 @@ def client():
 def test_workout_user_not_found(client):
     payload = {
         "username": "adminstrator",
-        "password": "password"
+        "date" : "04/20/2023",
+        "total_steps": 2130,
+        "calories_spent": 610,
+        "weight_measured": 60
     }
     response = client.post('/workout', json=payload)
     assert response.status_code == 200
@@ -26,7 +29,7 @@ def test_workout_success(client):
     }
     response = client.post('/workout', json=payload)
     assert response.status_code == 200
-    assert response.json['message'] == 'Succesful write to register db'
+    assert response.json['message'] == 'Succesful write to Workout db'
 
 def test_workout_invalid_method(client):
     response = client.get('/workout')

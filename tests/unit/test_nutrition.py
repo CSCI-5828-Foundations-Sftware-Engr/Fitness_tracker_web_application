@@ -10,7 +10,12 @@ def client():
 def test_nutrition_user_not_found(client):
     payload = {
         "username": "adminstrator",
-        "password": "password"
+        "date" : "04/20/2023",
+        "calorie_intake": 2130,
+        "protein": 60,
+        "carbs": 30,
+        "fat": 10,
+        "water_intake": 12
     }
     response = client.post('/nutrition', json=payload)
     assert response.status_code == 200

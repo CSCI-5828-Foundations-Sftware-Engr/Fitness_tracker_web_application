@@ -1,18 +1,64 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:600|Work+Sans:400,500,600,700&display=swap');
 
-body{
-  background: rgb(34,193,195);
-  background: linear-gradient(135deg, rgba(34,193,195,1) 0%,     rgba(253,187,45,1) 100%);
+body {
   font-family: "work sans";
-  height: 100%;
+  height: 100vh;
 }
 
-html{
+html {
   font-size: 100%;
 }
 
 .mainPage {
   height: 100%;
+}
+
+.header-with-logo {
+  display: flex;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  opacity: 1;
+  background-color: white;
+}
+
+.app-header {
+  display: flex;
+  height: 55px;
+  width: 100%;
+  font-size: 35px;
+  color: black;
+  background: linear-gradient(to right, #ffffff 5%, rgba(34, 193, 195, 1) 20%, rgba(253, 187, 45, 1) 100%);
+  background-size: 105% 200%;
+  background-position: 100% 100%;
+  justify-content: flex-end;
+  padding: 10px;
+}
+
+.user-initial-circle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  color: rgba(253, 187, 45, 1);
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.user-profile-circle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background-color: rgba(253, 187, 45, 1);
+  color: #ffffff;
+  font-size: 75px;
+  font-weight: bold;
 }
 
 #loginform {
@@ -22,11 +68,13 @@ html{
   margin-left: auto;
   margin-right: auto;
   background-color: #FFFFFF;
+  border-radius: 10px;
+  box-shadow: 0px 0px 8px 5px rgba(0, 0, 0, .4);
   border-radius: 25px;
   overflow: hidden;
 }
 
-#headerTitle{
+#headerTitle {
   text-align: center;
   font-family: 'open sans', sans-serif;
   padding: 2rem 0;
@@ -40,67 +88,67 @@ html{
   padding: 20px;
 }
 
-.row{
+.row {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding-top: 1rem;
   max-width: 100%;
-  
+
 }
 
-.row input{
+.row input {
   width: 80%;
   box-sizing: border-box;
-	border: none;
+  border: none;
   font-size: 1.3rem;
   padding-left: 1.5rem;
   padding-bottom: 1rem;
-  box-shadow: inset 0px -3px 0px 0px rgba(187,187,187,0.2);
+  box-shadow: inset 0px -3px 0px 0px rgba(187, 187, 187, 0.2);
   transition: box-shadow 0.2s ease-in;
 }
 
-.row input:focus{
-   box-shadow: inset 0px -3px 0px 0px rgba(34,193,195,0.7);
-   outline: none;
+.row input:focus {
+  box-shadow: inset 0px -3px 0px 0px rgba(34, 193, 195, 0.7);
+  outline: none;
 }
 
-.row input::-webkit-input-placeholder{
+.row input::-webkit-input-placeholder {
   opacity: 1;
   transition: opacity 0.25s ease-out;
 }
 
 .row input:hover::-webkit-input-placeholder,
-.row input:focus::-webkit-input-placeholder{
+.row input:focus::-webkit-input-placeholder {
   opacity: 0;
 }
 
-.row label{
+.row label {
   align-self: start;
   padding-left: 4.5rem;
   padding-bottom: 0.5rem;
-  color: rgba(187,187,187,0.9);
+  color: rgba(187, 187, 187, 0.9);
 }
 
-.row button{
+.row button {
   border-radius: 25px;
   width: 80%;
   height: 40px;
   font-size: 1.3rem;
   color: white;
   font-weight: 700;
-  background: rgb(34,193,195);
-  background: linear-gradient(90deg, rgba(34,193,195,1) 0%,     rgba(253,187,45,1) 100%);
+  background: rgb(34, 193, 195);
+  background: linear-gradient(90deg, rgba(34, 193, 195, 1) 0%, rgba(253, 187, 45, 1) 100%);
   border: 0px;
   cursor: pointer;
   transition: opacity 0.25s ease-out;
 }
 
-.row button:hover{
+.row button:hover {
   opacity: 0.8;
 }
 
-#button{
+#button {
   padding-bottom: 1.5rem;
   padding-top: 1.3rem;
 }
@@ -123,7 +171,311 @@ html{
 }
 
 .tabs button.active {
-  border-bottom: 3px solid rgb(34,193,195);
-  color:  rgb(34,193,195) ;
+  border-bottom: 3px solid rgb(34, 193, 195);
+  color: rgb(34, 193, 195);
 }
 
+.dashboard {
+  background-color: #FFFFFF;
+  height: 100vh;
+}
+
+.side-menu {
+  width: 200px;
+  height: inherit;
+  background-color: #ffffff;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.side-menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  height: 100%
+}
+
+.side-menu li {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  cursor: pointer;
+  height: 50px;
+}
+
+.side-menu li:hover {
+  color: #fff;
+  background-color: rgb(34, 193, 195);
+  border-radius: 5px;
+}
+
+.side-menu li {
+  display: flex;
+  align-items: center;
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.side-menu li svg {
+  margin-right: 10px;
+  width: 20px;
+  height: 20px;
+}
+
+.side-menu li span {
+  flex-grow: 1;
+}
+
+.side-menu li.selected {
+  font-weight: bold;
+}
+
+.side-menu li.selected svg {
+  fill: rgb(34, 193, 195);
+}
+
+.side-menu ul li.logout {
+  color: red;
+  cursor: pointer;
+  height: calc(100% - 350px);
+  align-items: end;
+}
+
+.side-menu ul li.logout:hover {
+  background-color: #ffffff;
+}
+
+.dashboard-components {
+  display: flex;
+  height: calc(100% - 60px);
+}
+
+.goal-tracker-container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  width: calc(100% - 200px);
+  margin: 25px;
+  padding: 40px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border-radius: 40px;
+}
+
+.goal-tracker-container h2 {
+  margin-bottom: 20px;
+}
+
+.goal-tracker-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 35px;
+  width: 100%;
+}
+
+.goal-tracker-form label {
+  display: block;
+  font-weight: bold;
+  margin-top: 10px;
+  color: #000000;
+  padding-left: 2rem;
+}
+
+.goal-tracker-form input {
+  display: block;
+  width: 80%;
+  padding: 6px 8px 8px 8px;
+  margin: 4px;
+  border-radius: 4px;
+}
+
+.goal-tracker-form button {
+  display: grid;
+  width: 40%;
+  padding: 8px;
+  margin: 10px 80px 10px 400px;
+  background: linear-gradient(90deg, rgba(34, 193, 195, 1) 0%, rgba(253, 187, 45, 1) 100%);
+  color: #fff;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  grid-column: 1 /span 2;
+}
+
+.goal-tracker-form button:hover {
+  background-color: #0056b3;
+}
+
+.user-profile-container {
+  display: flex;
+  flex-direction: column;
+  width: calc(100% - 200px);
+  margin: 25px;
+  padding: 40px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border-radius: 40px;
+  align-items: center;
+}
+
+.user-profile-container h2,
+.user-profile-container h3 {
+  margin-bottom: 20px;
+  margin-top: 50px;
+}
+
+.user-profile-container p {
+  margin-bottom: 10px;
+  font-weight: bold;
+  font-size: large;
+}
+
+.update-password-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.update-password-form label {
+  display: block;
+  font-weight: bold;
+  margin-top: 10px;
+  padding-left: 0;
+  color: #000000;
+}
+
+.update-password-form input {
+  display: block;
+  width: 100%;
+  padding: 6px 8px;
+  margin-top: 4px;
+  border-radius: 4px;
+}
+
+.update-password-form button {
+  display: block;
+  width: 40%;
+  padding: 8px;
+  margin-top: 40px;
+  background: linear-gradient(90deg, rgba(34, 193, 195, 1) 0%, rgba(253, 187, 45, 1) 100%);
+  color: #fff;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.update-password-form button:hover {
+  background-color: #0056b3;
+}
+
+.nutrition-container {
+  display: flex;
+  flex-direction: column;
+  width: calc(100% - 200px);
+  margin: 25px;
+  padding: 40px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border-radius: 40px;
+  overflow: auto;
+}
+
+.workout-container {
+  display: flex;
+  flex-direction: column;
+  width: calc(100% - 200px);
+  margin: 25px;
+  padding: 40px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border-radius: 40px;
+  overflow: auto;
+}
+
+.workout-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 35px;
+  width: 100%;
+}
+
+.workout-form button {
+  display: block;
+  width: 50%;
+  padding: 8px;
+  margin-top: 50px;
+  background: linear-gradient(90deg, rgba(34, 193, 195, 1) 0%, rgba(253, 187, 45, 1) 100%);
+  color: #fff;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  height: 40px;
+}
+
+.workout-form label {
+  display: block;
+  font-weight: bold;
+  margin-top: 10px;
+  color: #000000;
+  padding-left: 2rem;
+}
+
+.workout-form input {
+  display: block;
+  width: 80%;
+  padding: 6px 8px 8px 8px;
+  margin: 4px;
+  border-radius: 4px;
+}
+
+.nutrition-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  gap: 15px;
+  width: 100%;
+}
+
+.nutrition-form button {
+  display: block;
+  width: 70%;
+  padding: 8px;
+  margin-top: 50px;
+  background: linear-gradient(90deg, rgba(34, 193, 195, 1) 0%, rgba(253, 187, 45, 1) 100%);
+  color: #fff;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  height: 40px;
+}
+
+.nutrition-form label {
+  display: block;
+  font-weight: bold;
+  margin-top: 10px;
+  color: #000000;
+  padding-left: 1rem;
+}
+
+.nutrition-form input {
+  display: block;
+  width: 90%;
+  padding: 6px 8px 8px 8px;
+  margin: 4px;
+  border-radius: 4px;
+}
+
+.chart-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 1rem;
+}
+
+.chart-grid-nutrition {
+  display: grid;
+  grid-column: 1 /span 2;
+}
+
+.chart-container {
+  margin-top: 3.2em;
+}
