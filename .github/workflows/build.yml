@@ -1,7 +1,7 @@
 # This workflow will install Python dependencies, run tests and lint with a single version of Python
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
 
-name: Python application
+name: Build application and run unit tests
 
 on:
   push:
@@ -32,17 +32,3 @@ jobs:
       run: |
         source venv/bin/activate
         pytest
-  
-  automated-api-tests:
-  
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Install Postman CLI
-        run: |
-          curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
-      - name: Login to Postman CLI
-        run: postman login --with-api-key PMAK-6451fefa61a2420790328c8e-a73c36ab49874df4f0c2ee11bcd6d6f9e8
-      - name: Run API tests
-        run: |
-          postman collection run "27180869-de19fd11-2f92-42cc-ae52-acc2a55377b8"
