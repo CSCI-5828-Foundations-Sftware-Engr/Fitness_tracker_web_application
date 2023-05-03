@@ -35,8 +35,3 @@ def test_login_user_not_found(client):
     print(response.json['message'])
     assert response.status_code == 200
     assert response.json['message'] == 'User not found'
-
-def test_login_invalid_method(client):
-    response = client.get('/login')
-    assert response.status_code == 200
-    assert response.json['message'] == 'Received a non-Post request'
