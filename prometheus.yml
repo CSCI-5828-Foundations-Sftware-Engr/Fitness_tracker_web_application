@@ -1,0 +1,8 @@
+global:
+  scrape_interval: 10s
+
+scrape_configs:
+  - job_name: 'fitness-tracker-prometheus'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['fitness-tracker-staging.herokuapp.com']
