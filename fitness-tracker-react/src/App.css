@@ -3,6 +3,7 @@
 body {
   font-family: "work sans";
   height: 100vh;
+  background: linear-gradient(90deg, rgba(34, 193, 195, 1) 0%, rgba(253, 187, 45, 1) 100%);
 }
 
 html {
@@ -467,7 +468,7 @@ html {
 
 .chart-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   grid-gap: 1rem;
 }
 
