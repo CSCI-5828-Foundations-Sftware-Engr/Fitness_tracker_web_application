@@ -26,8 +26,8 @@ counter_signups = Counter('signups_total', 'Total number of signups')
 counter_logins = Counter('logins_total', 'Total number of logins')
 #server_request_latency = Histogram('server_request_latency', 'Latency of server requests', ['method', 'endpoint'])
 #Request and Response
-server_request_count = Counter('server_request_count', 'Total number of requests made to the backend server', ['method', 'endpoint'])
-server_response_count = Counter('server_response_count', 'Total number of responses sent from the backend server', ['method', 'endpoint'])
+server_request_count = Counter('server_request_count', 'Total number of requests made to the backend server')
+server_response_count = Counter('server_response_count', 'Total number of responses sent from the backend server')
 #signups
 signup_success_count = Counter('signup_success_count', 'Total number of successful requests made to the backend server for signup endpoint')
 signup_failure_count = Counter('signup_failure_count', 'Total number of failure requests made to the backend server for signup endpoint')
@@ -236,12 +236,14 @@ def nutrition():
             }
     '''
     server_request_count.inc()
+    # Get the current value of the counter
+    counter_value = server_request_count._value.get()
+    print(f"Current value of server_request_count: {counter_value}")
     message = ""
     try:
         if request.method == "POST":
             data = request.get_json()
             print(json.dumps(data, indent=4), session)
-
             user = data["username"]
             date = data["date"]
             calorie_intake = data["calorie_intake"]
@@ -262,6 +264,7 @@ def nutrition():
             # add this info to nutrition collection
             nutrition_filter = {"username":user, "date":date}
             nutrition_user_found = nutrition_db.find_one(nutrition_filter)
+            print(nutrition_user_found)
             if not nutrition_user_found:
                 nutrition_input = {"username": user, "date": date,
                                    "calorie_intake":calorie_intake, "protein":protein, "carbs":carbs,
@@ -270,16 +273,16 @@ def nutrition():
                 server_response_count.inc()
                 nutrition_dbwrite_success_count.inc()
                 return {"code": 200, "message": "Succesful new user write to Nutrition db"}
-            
+
             nutrition_new_values = {"$set": { 'date': date, 'calorie_intake': calorie_intake,
                                              'protein':protein, 'carbs':carbs,
                                              'fat':fat,'water_intake':water_intake}}
             # update collections accordingly
             nutrition_db.update_one(username_filter, nutrition_new_values)
-
             server_response_count.inc()
             nutrition_dbwrite_success_count.inc()
             message = "Succesful write to Nutrition db"
+
             return {"code": 200, "message": message}
         else:
             server_response_count.inc()
@@ -347,6 +350,13 @@ def workout():
             workout_db.update_one(username_filter, workout_new_values)
             server_response_count.inc()
             workout_dbwrite_success_count.inc()
+            # Get the current value of the counter
+            counter_value = server_response_count._value.get()
+            print(f"Current value of server_response_count: {counter_value}")
+            counter_value = workout_dbwrite_success_count._value.get()
+            print(f"Current value of workout_dbwrite_success_count: {counter_value}")
+            counter_value = server_request_count._value.get()
+            print(f"Current value of server_request_count: {counter_value}")
             message = "Succesful write to Workout db"
             return {"code": 200, "message": message}
         else:
