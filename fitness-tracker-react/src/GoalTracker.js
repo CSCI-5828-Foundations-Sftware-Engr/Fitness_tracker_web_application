@@ -20,7 +20,7 @@ const GoalTracker = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    fetch('http://127.0.0.1:5000/goal_tracking', {
+    fetch('https://fitness-tracker-staging.herokuapp.com/goal_tracking', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import { useLocation } from 'react-router-dom';
+import Chart from './Chart';
 
 const Nutrition = () => {
     const location = useLocation();
@@ -11,11 +12,111 @@ const Nutrition = () => {
     const [fat, setFat] = useState('');
     const [water_intake, setWater] = useState('');
     const [date, setCurrentDate] = useState(new Date().toLocaleDateString('en-CA'));
+    const [calorieIntakeData, setCalorieIntakeData] = useState('');
+    const [waterIntakeData, setWaterIntakeData] = useState('');
+    const [proteinIntakeData, setProteinIntakeData] = useState('');
+    const [carbsIntakeData, setCarbsIntakeData] = useState('');
+    const [fatIntakeData, setFatIntakeData] = useState('');
+
+    useEffect(() => {
+        fetch('https://fitness-tracker-staging.herokuapp.com/nutrition_analysis', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                username,
+            }),
+        })
+            .then(response => response.json())
+            .then((data) => {
+                // Convert the data into the desired format
+                console.log(data.data.data)
+                const calorieData = data.data.data.map((item) => ({
+                    date: item.date,
+                    calories_intake: Number(item.calorie_intake),
+                    target_calories: Number(data.data.target.calorie_intake_goal)
+                }));
+                setCalorieIntakeData(calorieData);
+
+                const waterData = data.data.data.map((item) => ({
+                    date: item.date,
+                    water_intake: Number(item.water_intake),
+                    target_water: Number(data.data.target.water_goal)
+                }));
+                setWaterIntakeData(waterData);
+
+                const proteinData = data.data.data.map((item) => ({
+                    date: item.date,
+                    protein_intake: Number(item.protein),
+                    target_protein: Number(data.data.target.protein_goal)
+                }));
+                setProteinIntakeData(proteinData);
+
+                const carbsData = data.data.data.map((item) => ({
+                    date: item.date,
+                    carbs_intake: Number(item.carbs),
+                    target_carbs: Number(data.data.target.carbs_goal)
+                }));
+                setCarbsIntakeData(carbsData);
+
+                const fatData = data.data.data.map((item) => ({
+                    date: item.date,
+                    fat_intake: Number(item.fat),
+                    target_fat: Number(data.data.target.fat_goal)
+                }));
+                setFatIntakeData(fatData);
+
+
+            })
+            .catch(error => console.error(error));
+    });
+
+    const caloriesTrackingChartData = {
+        data: calorieIntakeData,
+        xAxisDataKey: "date",
+        barChartDataKey: "calories_intake",
+        barChartName: "Calories Spent",
+        lineChartDataKey: "target_calories",
+        lineChartName: "Target Calories"
+    };
+    const waterIntakeTrackingChartData = {
+        data: waterIntakeData,
+        xAxisDataKey: "date",
+        barChartDataKey: "water_intake",
+        barChartName: "Water Intake (Glasses)",
+        lineChartDataKey: "target_water",
+        lineChartName: "Target Water Intake"
+    };
+    const proteinIntakeTrackingChartData = {
+        data: proteinIntakeData,
+        xAxisDataKey: "date",
+        barChartDataKey: "protein_intake",
+        barChartName: "Protein Intake (%)",
+        lineChartDataKey: "target_protein",
+        lineChartName: "Target Protein Intake"
+    };
+    const carbsIntakeTrackingChartData = {
+        data: carbsIntakeData,
+        xAxisDataKey: "date",
+        barChartDataKey: "carbs_intake",
+        barChartName: "Carbs (%)",
+        lineChartDataKey: "target_carbs",
+        lineChartName: "Target Carbs Intake"
+    };
+    const fatIntakeTrackingChartData = {
+        data: fatIntakeData,
+        xAxisDataKey: "date",
+        barChartDataKey: "fat_intake",
+        barChartName: "Fat (%)",
+        lineChartDataKey: "target_fat",
+        lineChartName: "Target Fat Intake"
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        fetch('http://127.0.0.1:5000/nutrition', {
+        fetch('https://fitness-tracker-staging.herokuapp.com/nutrition', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -101,6 +202,14 @@ const Nutrition = () => {
 
                 <button type="submit">Submit</button>
             </form>
+
+            <div class="chart-grid">
+                <Chart label="Protein Tracking" data={proteinIntakeTrackingChartData} />
+                <Chart label="Carbs Tracking" data={carbsIntakeTrackingChartData} />
+                <Chart label="Fat Tracking" data={fatIntakeTrackingChartData} />
+                <Chart label="Calories Tracking" data={caloriesTrackingChartData} />
+                <Chart label="Water Intake Tracking" data={waterIntakeTrackingChartData} />
+            </div>
 
         </div>
     );

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaRegUser, FaBullseye, FaUtensils, FaDumbbell, FaSignOutAlt} from 'react-icons/fa';
+import { FaRegUser, FaBullseye, FaUtensils, FaDumbbell, FaSignOutAlt, FaLightbulb} from 'react-icons/fa';
 import { useNavigate } from "react-router-dom";
 import GoalTracker from "./GoalTracker";
 import UserProfile from "./UserProfile";
@@ -34,6 +34,11 @@ const SideMenu = () => {
         id: 'nutrition',
         icon: <FaUtensils />,
         label: 'Nutrition'
+      }, 
+      {
+        id: 'recommendation',
+        icon: <FaLightbulb />,
+        label: 'Recommendations'
       }, 
       {
         id: 'logout',

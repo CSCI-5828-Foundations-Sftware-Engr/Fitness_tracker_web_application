@@ -34,7 +34,7 @@ const LoginForm = props => {
                 });
             }
             else {
-
+                alert("Invalid username or password");
             }
         } catch (error) {
             console.error(error);

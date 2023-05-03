@@ -237,7 +237,7 @@ html {
 .side-menu ul li.logout {
   color: red;
   cursor: pointer;
-  height: calc(100% - 280px);
+  height: calc(100% - 350px);
   align-items: end;
 }
 
@@ -377,6 +377,7 @@ html {
   padding: 40px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-radius: 40px;
+  overflow: auto;
 }
 
 .workout-container {
@@ -387,6 +388,7 @@ html {
   padding: 40px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-radius: 40px;
+  overflow: auto;
 }
 
 .workout-form {
@@ -461,4 +463,19 @@ html {
   padding: 6px 8px 8px 8px;
   margin: 4px;
   border-radius: 4px;
+}
+
+.chart-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 1rem;
+}
+
+.chart-grid-nutrition {
+  display: grid;
+  grid-column: 1 /span 2;
+}
+
+.chart-container {
+  margin-top: 3.2em;
 }
