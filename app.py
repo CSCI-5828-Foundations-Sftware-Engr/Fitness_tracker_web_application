@@ -143,7 +143,7 @@ def login():
                 passwordcheck = user_found['password']
                 if bcrypt.checkpw(password.encode('utf-8'), passwordcheck):
                     message = "Password matched"
-                    return {"code": 200, "message": message}
+                    return {"code": 200, "message": message, 'username':user_found['username'], 'email':user_found['email'], 'phone':user_found['phone']}
                 else:
                     message = 'Wrong password'
                     return {"code": 200, "message": message}
