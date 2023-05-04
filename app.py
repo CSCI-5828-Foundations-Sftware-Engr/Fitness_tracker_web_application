@@ -545,6 +545,12 @@ def workout_analysis():
 
             # return the target data
             user_goal = goal_db.find_one({'username': user})
+            if not user_goal:
+                server_response_count.inc()
+                workout_dbretrival_failure_count.inc()
+                message = 'User not found at goal db'
+                return {"code": 200, "message": message}
+
             response_data['target']['steps_goal'] = user_goal['steps_goal']
             response_data['target']['target_weight'] = user_goal['target_weight']
             response_data['target']['calorie_burn_goal'] = user_goal['calorie_burn_goal']
