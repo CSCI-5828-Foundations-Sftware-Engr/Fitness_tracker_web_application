@@ -16,11 +16,11 @@ const SideMenu = () => {
   };
   const getMenuItems = () => {
     const items = [
-      {
-        id: 'profile',
-        icon: <FaRegUser />,
-        label: 'Profile'
-      },
+      // {
+      //   id: 'profile',
+      //   icon: <FaRegUser />,
+      //   label: 'Profile'
+      // },
       {
         id: 'goal',
         icon: <FaBullseye />,
@@ -68,8 +68,8 @@ const SideMenu = () => {
 
   const renderSelectedComponent = () => {
     switch (selectedOption) {
-      case 'profile':
-        return <UserProfile />;
+      // case 'profile':
+      //   return <UserProfile />;
       case 'goal':
         return <GoalTracker />;
       case 'nutrition':

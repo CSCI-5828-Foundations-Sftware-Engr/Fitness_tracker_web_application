@@ -68,6 +68,9 @@ npm start
 #### Heroku deployment
 ```
 heroku login
+npm install 
+rm -rf build/*
+npm run build
 git push heroku main
 ```
 
