@@ -16,6 +16,7 @@ const GoalTracker = () => {
   const [protein_goal, setProteinGoal] = useState('');
   const [carbs_goal, setCarbsGoal] = useState('');
   const [fat_goal, setFatGoal] = useState('');
+  const [gender, setGender] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -37,7 +38,8 @@ const GoalTracker = () => {
         calorie_intake_goal,
         protein_goal,
         carbs_goal,
-        fat_goal
+        fat_goal,
+        gender
       }),
     })
       .then((response) => {
@@ -78,13 +80,13 @@ const GoalTracker = () => {
         </div>
 
         <div class="row">
-          <label htmlFor="water_goal">Water Goal (in glasses):</label>
+          <label htmlFor="gender">Gender:</label>
           <input
-            id="water_goal"
-            placeholder="Enter Water Goal"
-            type="number"
-            value={water_goal}
-            onChange={(e) => setWaterGoal(e.target.value)}
+            id="gender"
+            placeholder="Enter Gender"
+            type="text"
+            value={gender}
+            onChange={(e) => setGender(e.target.value)}
           />
         </div>
 
@@ -173,6 +175,17 @@ const GoalTracker = () => {
             type="number"
             value={calorie_intake_goal}
             onChange={(e) => setCaloriesIntakeGoal(e.target.value)}
+          />
+        </div>
+
+        <div class="row">
+          <label htmlFor="water_goal">Water Goal (in glasses):</label>
+          <input
+            id="water_goal"
+            placeholder="Enter Water Goal"
+            type="number"
+            value={water_goal}
+            onChange={(e) => setWaterGoal(e.target.value)}
           />
         </div>
 
