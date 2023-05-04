@@ -403,7 +403,7 @@ def goal_tracking():
             
             # add current weight, age and height to register || other info to goal 
             username_filter = {"username":user}
-            register_new_values = {"$set": { 'current_weight': current_weight, 'age': age, 'height':height, 'gender':gender }}
+            register_new_values = {"$set": { 'current_weight': current_weight, 'age': age, 'height':height }}
             
             # user check
             user_found = register_db.find_one(username_filter)
@@ -424,7 +424,8 @@ def goal_tracking():
                                 'calorie_intake_goal':calorie_intake_goal,
                                 'protein_goal':protein_goal,
                                 'carbs_goal':carbs_goal,
-                                'fat_goal':fat_goal
+                                'fat_goal':fat_goal,
+                                'gender':gender
                             } 
                 goal_db.insert_one(goal_input)
                 server_response_count.inc()
@@ -439,7 +440,8 @@ def goal_tracking():
                                         'calorie_intake_goal':calorie_intake_goal,
                                         'protein_goal':protein_goal,
                                         'carbs_goal':carbs_goal,
-                                        'fat_goal':fat_goal
+                                        'fat_goal':fat_goal,
+                                        'gender':gender
                                         }
                                 }
             
@@ -585,7 +587,7 @@ def workout_analysis():
         message = "Error observed!!"
         return {"code":500, "message": message}
 
-def calculate_bmr(weight, height=180, age=22, gender="Male"):
+def calculate_bmr(weight, height, age, gender):
     if gender.lower() == "male":
         bmr = 66 + (13.75 * weight) + (5 * height) - (6.75 * age)
     else:
@@ -595,18 +597,19 @@ def calculate_bmr(weight, height=180, age=22, gender="Male"):
 # timeframe in days, weight in kgs, height in cms
 def calculate_ideal_calorie_intake(weight, target_weight, gender="male", age=22, height=180):
     print("Called Ideal")
+    activity_level="sedentary"
     time_frame = 30
     height_in_meters = height / 100  # Convert height from centimeters to meters
     bmr = calculate_bmr(weight, height_in_meters, age, gender)
+    print(bmr)
     
     if target_weight < weight:
         calorie_deficit = (weight - target_weight) * 7700 / time_frame  # Each kilogram is approximately 7700 calories
         ideal_calorie_intake = bmr - calorie_deficit
     else:
         calorie_surplus = (target_weight - weight) * 7700 / time_frame
+        ideal_calorie_intake = bmr + calorie_surplus
 
-    ideal_calorie_intake = bmr + calorie_surplus
-    activity_level = "sedentary"
     activity_level_multipliers = {
         "sedentary": 1.2,
         "lightly active": 1.375,
@@ -616,6 +619,7 @@ def calculate_ideal_calorie_intake(weight, target_weight, gender="male", age=22,
     }
 
     ideal_calorie_intake *= activity_level_multipliers.get(activity_level.lower(), 1.2)
+    print(ideal_calorie_intake)
     return ideal_calorie_intake
 
 @app.route('/recommendations', methods=['post','get'])
@@ -637,8 +641,9 @@ def recommendations():
             register_entry = register_db.find_one({"username": user})
             response_data = {'high_protein':[], 'low_fat':[], 'low_carbs':[], 'balanced':[]}
             print(register_entry, goal_entry, reco_entry)
-            response_data['ideal_calorie_intake'] = calculate_ideal_calorie_intake(int(register_entry['current_weight']), int(goal_entry['target_weight']), register_entry['gender'], int(register_entry['age']), int(register_entry['height']))
+            response_data['ideal_calorie_intake'] = calculate_ideal_calorie_intake(int(register_entry['current_weight']), int(goal_entry['target_weight']), goal_entry['gender'], int(register_entry['age']), int(register_entry['height']))
 
+            print(response_data)
             if reco_entry["average_protein"] < int(goal_entry["protein_goal"]):
                 response_data["high_protein"] = list(diet_db.find_one({'diet':'high_protein'})['recipes'])
             if reco_entry["average_fat"] > int(goal_entry["fat_goal"]):
