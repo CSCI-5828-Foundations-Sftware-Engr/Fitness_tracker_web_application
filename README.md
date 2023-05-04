@@ -37,7 +37,7 @@ Our application helps users lead a healthier and more active lifestyle by provid
 ### Architecture Diagram
 
 <p align="center">
-  <img src="Architecture_Diagram.png" alt="alt text" width="500" style="margin-bottom: 20px;" />
+  <img src="Architecture_Diagram.png" alt="alt text" width="800" style="margin-bottom: 20px;" />
 </p>
 
 - In this architecture, React.js is used for the frontend, Python and Flask are used for the backend, and MongoDB is used as the database. The external API sends requests to the backend, which is responsible for processing the requests and communicating with the database.
