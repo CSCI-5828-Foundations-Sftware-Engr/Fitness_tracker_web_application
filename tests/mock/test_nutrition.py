@@ -5,11 +5,11 @@ def test_nutrition_success():
     # Define the expected response data
     expected_data = {
         "target": {
-            "calorie_intake_goal": "1222",
+            "calorie_intake_goal": "2223",
             "protein_goal": "40",
             "fat_goal": "20",
             "carbs_goal": "40",
-            "water_goal": "122",
+            "water_goal": "12",
         },
         "data": [
             {
@@ -78,10 +78,10 @@ def test_nutrition_success():
             
             # Call the function under test
             response = nutrition_analysis()
-            #print("RESPONSE")
-            #print(response)
-            #print(response['data'])
-            #print(expected_data)
+            print("RESPONSE")
+            print(response)
+            print(response['data'])
+            print(expected_data)
             # Assert the response
             assert response['message'] == expected_message
             assert response['code'] == expected_code

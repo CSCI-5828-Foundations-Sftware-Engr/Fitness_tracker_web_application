@@ -1,5 +1,33 @@
-# Fitness_tracker_web_application
-One application to track all your activities and stay fit
+# Fitness Tracker Application
+| Team: Devs on the go |
+| :------: | 
+|    Sai Akhil Teja |
+|    Sharon Moses |
+|    Manali Kale |
+|    Saksham Srivastava |
+|    Pavit Singh Nagpal  |
+
+### Introduction
+
+Our application helps users lead a healthier and more active lifestyle by providing them with tools to track their progress and make informed decisions about their fitness and nutrition goals. Our application provides the following functionalities:
+- Goal tracking
+- Work out tracking
+- Nutrition tracking
+- Reminders
+- Personal Recommendations
+
+### Project Rubric
+| Rubric | Commentary |
+| :------ | :------ | 
+| Web application: basic form, reporting | We are implementing front end using [React JS](https://github.com/CSCI-5828-Foundations-Sftware-Engr/Fitness_tracker_web_application/tree/main/fitness-tracker-react) and using [REST API](https://github.com/CSCI-5828-Foundations-Sftware-Engr/Fitness_tracker_web_application/blob/main/app.py) communication to interact with the backend APIs  |
+| Data collection | We have a cron job that periodically calls a [data_collector](https://github.com/CSCI-5828-Foundations-Sftware-Engr/Fitness_tracker_web_application/blob/43c4115592139ff33079d425e1e969dc900a109a/app.py#L658) API. This API first fetches latest recepies with high protein diet, low fat diet, low carb diet and balanced diet. It also averages the fat, protein, and carbs consumption for each user and writes that to the Mongo Db. Based on user's consumption and goals, the API add user-events on to the RabbitMQ messaging queue.|
+| Data analyzer | Our Data analysis for [Workout](https://github.com/CSCI-5828-Foundations-Sftware-Engr/Fitness_tracker_web_application/blob/main/fitness-tracker-react/src/Workout.js), [Nutrition](https://github.com/CSCI-5828-Foundations-Sftware-Engr/Fitness_tracker_web_application/blob/main/fitness-tracker-react/src/Nutrition.js) is done on-demand i.e. whenever the user wishes to see/record his workout information or the nutrition consumption information, we analyze the past workout/nutrition data and display as charts. These charts capture trends in the user's calorie consumption, calories burnt, protein consumption, fat consumption, carbs consumption, water intake and compare the same with the corresponding goals set by user. |
+|  Unit tests | We have written unit tests to test our functionality and can be [found](https://github.com/CSCI-5828-Foundations-Sftware-Engr/Fitness_tracker_web_application/tree/main/tests) here. These unit tests are run as part of github workflows everytime a push or pull is done on the main branch. |
+|  Data persistence any data store | We used a distributed database - MongoDb with 1 primary node and 2 secondary nodes hosted on Atlas. Data Persistence and fault tolerance is guaranteed since its Database-as-a-service. The schema and cluster information can be found [here](https://cloud.mongodb.com/v2/6440725595bfd24694da1830#/clusters/detail/Cluster0)|
+| Rest collaboration internal or API endpoint | We used Flask to host our webserver and gunicorn on [heroku](https://fitness-tracker-staging.herokuapp.com/). The backend code for REST APIs and hosting Flask server can be found [here](https://github.com/CSCI-5828-Foundations-Sftware-Engr/Fitness_tracker_web_application/blob/main/app.py).|
+| Product environment | We are using heroku as our production environment and our app can be found [here](https://fitness-tracker-staging.herokuapp.com/). Our pipeline has two applications running, the first one to host our fitness tracker application and the second to collect the metrics using [prometheus](https://fitness-prometheus.herokuapp.com/graph) |
+
+
 <p align="center">
   <img src="Architecture_Diagram.png" alt="alt text" width="500" style="margin-bottom: 20px;" />
 </p>
