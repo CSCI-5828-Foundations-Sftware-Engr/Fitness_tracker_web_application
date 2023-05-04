@@ -27,6 +27,10 @@ const LoginForm = props => {
             });
             const data = await response.json();
             if (data.message === "Password matched") {
+                console.log(data)
+                formData.email = data.email
+                formData.contactNumber = data.phone
+                console.log(formData)
                 navigate('dashboard', {
                     state: {
                         ...formData
