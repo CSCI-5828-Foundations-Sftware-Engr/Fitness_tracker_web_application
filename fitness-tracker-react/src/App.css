@@ -269,7 +269,7 @@ html {
 .goal-tracker-form {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  gap: 35px;
+  gap: 25px;
   width: 100%;
 }
 

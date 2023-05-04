@@ -37,7 +37,7 @@ const Workout = () => {
                 const caloriesData = data.data.data.map((item) => ({
                     date: item.date,
                     calories: Number(item.calories_spent),
-                    target_carbs: Number(data.data.target.calories_spent_goal)
+                    target_calories: Number(data.data.target.calorie_burn_goal)
                 }));
                 setCaloriesData(caloriesData);
 

@@ -26,7 +26,7 @@ const LoginForm = props => {
                 body: JSON.stringify(formData)
             });
             const data = await response.json();
-            if (data.message === "Password matched") {
+            if (activeTab=== 'login' && data.message === "Password matched") {
                 console.log(data)
                 formData.email = data.email
                 formData.contactNumber = data.phone
@@ -37,9 +37,13 @@ const LoginForm = props => {
                     }
                 });
             }
+            else if (activeTab === 'signup' ) {
+                alert("User successfully registered");
+            }
             else {
                 alert("Invalid username or password");
             }
+            
         } catch (error) {
             console.error(error);
         }

@@ -76,7 +76,7 @@ const Nutrition = () => {
         data: calorieIntakeData,
         xAxisDataKey: "date",
         barChartDataKey: "calories_intake",
-        barChartName: "Calories Spent",
+        barChartName: "Calories Intake",
         lineChartDataKey: "target_calories",
         lineChartName: "Target Calories"
     };
