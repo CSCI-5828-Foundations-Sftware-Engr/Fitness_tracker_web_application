@@ -598,7 +598,7 @@ def calculate_bmr(weight, height, age, gender):
 def calculate_ideal_calorie_intake(weight, target_weight, gender="male", age=22, height=180):
     print("Called Ideal")
     activity_level="sedentary"
-    time_frame = 30
+    time_frame = 180
     height_in_meters = height / 100  # Convert height from centimeters to meters
     bmr = calculate_bmr(weight, height_in_meters, age, gender)
     print(bmr)
