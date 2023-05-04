@@ -644,7 +644,6 @@ def recommendations():
             response_data['ideal_calorie_intake'] = calculate_ideal_calorie_intake(int(register_entry['current_weight']), int(goal_entry['target_weight']), goal_entry['gender'], int(register_entry['age']), int(register_entry['height']))
 
             print(response_data)
-        
             response_data["high_protein"] = list(diet_db.find_one({'diet':'high_protein'})['recipes'])
             response_data["low_fat"] = list(diet_db.find_one({'diet':'low_fat'})['recipes'])
             response_data["low_carbs"] = list(diet_db.find_one({'diet':'low_carbs'})['recipes'])
