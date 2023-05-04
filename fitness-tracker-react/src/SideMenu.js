@@ -5,6 +5,7 @@ import GoalTracker from "./GoalTracker";
 import UserProfile from "./UserProfile";
 import Nutrition from "./Nutrition";
 import Workout from "./Workout";
+import Recommendations from './Recommendations';
 
 const SideMenu = () => {
   const navigate = useNavigate();
@@ -75,6 +76,8 @@ const SideMenu = () => {
         return <Nutrition />;
       case 'workout':
         return <Workout />;
+      case 'recommendation':
+        return <Recommendations/>
       default:
         return null;
     }

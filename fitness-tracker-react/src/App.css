@@ -480,3 +480,47 @@ html {
 .chart-container {
   margin-top: 3.2em;
 }
+
+.recommendation-table {
+  width: 33%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.recommendation-table th {
+  height: 25px;
+}
+
+.recommendation-table th,
+.recommendation-table td {
+  padding: 7px;
+  text-align: left;
+  width: 50%;
+}
+
+.recommendation-table th {
+  background-color: #020101;
+}
+
+.recommendation-table tbody tr:hover {
+  background: linear-gradient(90deg, rgba(34, 193, 195, 1) 0%, rgba(253, 187, 45, 1) 100%);
+}
+
+.recommendation-table a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.recommendation-table a:hover {
+  text-decoration: underline;
+}
+
+.recommendation-table-display {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.intake{
+  margin-left: 120px;
+  margin-top: 50px;
+}
