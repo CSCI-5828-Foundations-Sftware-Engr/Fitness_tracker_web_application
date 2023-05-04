@@ -399,10 +399,11 @@ def goal_tracking():
             protein_goal = data["protein_goal"]
             carbs_goal = data["carbs_goal"]
             fat_goal = data["fat_goal"]
+            gender = data["gender"]
             
             # add current weight, age and height to register || other info to goal 
             username_filter = {"username":user}
-            register_new_values = {"$set": { 'current_weight': current_weight, 'age': age, 'height':height }}
+            register_new_values = {"$set": { 'current_weight': current_weight, 'age': age, 'height':height, 'gender':gender }}
             
             # user check
             user_found = register_db.find_one(username_filter)
@@ -584,7 +585,7 @@ def workout_analysis():
         message = "Error observed!!"
         return {"code":500, "message": message}
 
-def calculate_bmr(weight, height, age, gender):
+def calculate_bmr(weight, height=180, age=22, gender="Male"):
     if gender.lower() == "male":
         bmr = 66 + (13.75 * weight) + (5 * height) - (6.75 * age)
     else:
@@ -635,7 +636,7 @@ def recommendations():
             register_entry = register_db.find_one({"username": user})
             response_data = {'high_protein':[], 'low_fat':[], 'low_carbs':[], 'balanced':[]}
             print(register_entry, goal_entry, reco_entry)
-            response_data['ideal_calorie_intake'] = calculate_ideal_calorie_intake(int(register_entry['current_weight']), int(goal_entry['target_weight']), goal_entry['activity_level'], goal_entry['gender'], int(register_entry['age']), int(register_entry['height']))
+            response_data['ideal_calorie_intake'] = calculate_ideal_calorie_intake(int(register_entry['current_weight']), int(goal_entry['target_weight']), 1.2, register_entry['gender'], int(register_entry['age']), int(register_entry['height']))
 
             if reco_entry["average_protein"] < int(goal_entry["protein_goal"]):
                 response_data["high_protein"] = list(diet_db.find_one({'diet':'high_protein'})['recipes'])
