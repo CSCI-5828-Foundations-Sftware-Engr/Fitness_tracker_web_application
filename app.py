@@ -593,7 +593,7 @@ def calculate_bmr(weight, height=180, age=22, gender="Male"):
     return bmr
 
 # timeframe in days, weight in kgs, height in cms
-def calculate_ideal_calorie_intake(weight, target_weight, activity_level="sedentary", gender="male", age=22, height=180):
+def calculate_ideal_calorie_intake(weight, target_weight, gender="male", age=22, height=180):
     print("Called Ideal")
     time_frame = 30
     height_in_meters = height / 100  # Convert height from centimeters to meters
@@ -604,8 +604,9 @@ def calculate_ideal_calorie_intake(weight, target_weight, activity_level="sedent
         ideal_calorie_intake = bmr - calorie_deficit
     else:
         calorie_surplus = (target_weight - weight) * 7700 / time_frame
-        ideal_calorie_intake = bmr + calorie_surplus
 
+    ideal_calorie_intake = bmr + calorie_surplus
+    activity_level = "sedentary"
     activity_level_multipliers = {
         "sedentary": 1.2,
         "lightly active": 1.375,
@@ -636,7 +637,7 @@ def recommendations():
             register_entry = register_db.find_one({"username": user})
             response_data = {'high_protein':[], 'low_fat':[], 'low_carbs':[], 'balanced':[]}
             print(register_entry, goal_entry, reco_entry)
-            response_data['ideal_calorie_intake'] = calculate_ideal_calorie_intake(int(register_entry['current_weight']), int(goal_entry['target_weight']), 1.2, register_entry['gender'], int(register_entry['age']), int(register_entry['height']))
+            response_data['ideal_calorie_intake'] = calculate_ideal_calorie_intake(int(register_entry['current_weight']), int(goal_entry['target_weight']), register_entry['gender'], int(register_entry['age']), int(register_entry['height']))
 
             if reco_entry["average_protein"] < int(goal_entry["protein_goal"]):
                 response_data["high_protein"] = list(diet_db.find_one({'diet':'high_protein'})['recipes'])
