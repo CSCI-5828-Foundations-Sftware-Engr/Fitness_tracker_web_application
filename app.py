@@ -1,6 +1,7 @@
 '''
 Back end code for fitness tracker application
 '''
+from datetime import time
 import json
 import bcrypt
 import requests
@@ -585,7 +586,7 @@ def calculate_bmr(weight, height, age, gender):
     return bmr
 
 # timeframe in days, weight in kgs, height in cms
-def calculate_ideal_calorie_intake(weight, target_weight, activity_level, gender, age, height):
+def calculate_ideal_calorie_intake(weight, target_weight, activity_level="sedentary", gender="male", age=22, height=180):
     print("Called Ideal")
     time_frame = 30
     height_in_meters = height / 100  # Convert height from centimeters to meters
@@ -626,15 +627,17 @@ def recommendations():
             reco_entry = reco_db.find_one({"username": user})
             goal_entry = goal_db.find_one({"username": user})
             register_entry = register_db.find_one({"username": user})
-            response_data = {'high_protein':{}, 'low-fat':{}, 'low-carb':{}, 'balanced':{}}
+            response_data = {'high_protein':[], 'low_fat':[], 'low_carbs':[], 'balanced':[]}
+            print(register_entry, goal_entry, reco_entry)
             response_data['ideal_calorie_intake'] = calculate_ideal_calorie_intake(int(register_entry['current_weight']), int(goal_entry['target_weight']), goal_entry['activity_level'], goal_entry['gender'], int(register_entry['age']), int(register_entry['height']))
 
-            if reco_entry["average_protein"] < goal_entry["protein"]:
-                response_data["high_protein"] = diet_db.find_one({'diet':'high_protein'})
-            if reco_entry["average_fat"] > goal_entry["fat"]:
-                response_data["low_fat"] = diet_db.find_one({'diet':'low_fat'})
-            if reco_entry["average_carbs"] > goal_entry["carb"]:
-                response_data["low_carbs"] = diet_db.find_one({'diet':'low_carbs'})
+            if reco_entry["average_protein"] < int(goal_entry["protein_goal"]):
+                response_data["high_protein"] = list(diet_db.find_one({'diet':'high_protein'})['recipes'])
+            if reco_entry["average_fat"] > int(goal_entry["fat_goal"]):
+                response_data["low_fat"] = list(diet_db.find_one({'diet':'low_fat'})['recipes'])
+            if reco_entry["average_carbs"] > int(goal_entry["carbs_goal"]):
+                response_data["low_carbs"] = list(diet_db.find_one({'diet':'low_carbs'})['recipes'])
+            response_data["balanced"] = list(diet_db.find_one({'diet':'balanced'})['recipes'])
 
             print(response_data)
             message = "Succesful retrieval of Workout Analysis data"
@@ -666,53 +669,120 @@ def data_collector():
             print("Fetching High Protein diet")
             response = requests.get(high_protein_url)
             if response.status_code == 200:
-                json_data = response.json()
-                if len(list(json_data['hits'])) != 0:
-                    high_protein_diet = {"diet":"high_protein", 'recipes': list(json_data['hits'])[:5]}
-                    diet_db.insert_one(high_protein_diet)
+                data = response.json()
+                json_unformatted_data = data['hits'][:5]
+
+                json_data = []
+                # trim json to fit the data
+                for json_unformatted_var in list(json_unformatted_data):
+                    json_var = {}
+                    json_var["url"] = json_unformatted_var["recipe"]["url"]
+                    json_var["image"] = json_unformatted_var["recipe"]["image"]
+                    json_var["label"] = json_unformatted_var["recipe"]["label"]
+                    json_data.append(json_var)
+                
+                # print(json_data)
+                if len(json_data) != 0:
+                    high_protein_diet_entry_found = diet_db.find_one({"diet":"high_protein"})
+                    if not high_protein_diet_entry_found:
+                        high_protein_diet = {"diet":"high_protein", 'recipes': json_data[:5]}
+                        diet_db.insert_one(high_protein_diet)
+                    else:
+                        reco_input = {"$set": {'recipes':  json_data[:5]}}
+                        diet_db.update_one({"diet":"high_protein"}, reco_input)                        
             else:
                 return {"code": 200, "message": 'High Protein diet fetch request failed with status code:'+response.status_code}
 
             # Fetch the high protein diet and store in db
             print("Fetching Balanced diet")
+            # time.sleep(10)
             response = requests.get(balanced_url)
             if response.status_code == 200:
-                json_data = response.json()
-                list(json_data['hits'])
-                if len(list(json_data['hits'])) != 0:
-                    balanced_diet = {"diet":"balanced", 'recipes': list(json_data['hits'])[:5]}
-                    diet_db.insert_one(balanced_diet)
+                data = response.json()
+                json_unformatted_data = data['hits'][:5]
+
+                json_data = []
+                # trim json to fit the data
+                for json_unformatted_var in list(json_unformatted_data):
+                    json_var = {}
+                    json_var["url"] = json_unformatted_var["recipe"]["url"]
+                    json_var["image"] = json_unformatted_var["recipe"]["image"]
+                    json_var["label"] = json_unformatted_var["recipe"]["label"]
+                    json_data.append(json_var)
+                
+                # print(json_data)
+                if len(json_data) != 0:
+                    balanced_diet_entry_found = diet_db.find_one({"diet":"balanced"})
+                    if not balanced_diet_entry_found:
+                        balanced_diet = {"diet":"balanced", 'recipes': json_data[:5]}
+                        diet_db.insert_one(balanced_diet)
+                    else:
+                        reco_input = {"$set": {'recipes': json_data[:5]}}
+                        diet_db.update_one({"diet":"balanced"}, reco_input)
             else:
                 return {"code": 200, "message": 'Balanced diet fetch request failed with status code:'+response.status_code}
 
             # Fetch the high protein diet and store in db
             print("Fetching Low carb diet")
+            # time.sleep(10)
             response = requests.get(low_carbs_url)
             if response.status_code == 200:
-                json_data = response.json()
-                list(json_data['hits'])
-                if len(list(json_data['hits'])) != 0:
-                    low_carbs_diet = {"diet":"low_carbs", 'recipes': list(json_data['hits'])[:5]}
-                    diet_db.insert_one(low_carbs_diet)
+                data = response.json()
+                json_unformatted_data = data['hits'][:5]
+
+                json_data = []
+                # trim json to fit the data
+                for json_unformatted_var in list(json_unformatted_data):
+                    json_var = {}
+                    json_var["url"] = json_unformatted_var["recipe"]["url"]
+                    json_var["image"] = json_unformatted_var["recipe"]["image"]
+                    json_var["label"] = json_unformatted_var["recipe"]["label"]
+                    json_data.append(json_var)
+                
+                # print(json_data)
+                if len(json_data) != 0:
+                    low_carbs_diet_entry_found = diet_db.find_one({"diet":"low_carbs"})
+                    if not low_carbs_diet_entry_found:
+                        low_carbs_diet = {"diet":"low_carbs", 'recipes': json_data[:5]}
+                        diet_db.insert_one(low_carbs_diet)
+                    else:
+                        reco_input = {"$set": {'recipes': json_data[:5]}}
+                        diet_db.update_one({"diet":"low_carbs"}, reco_input)
             else:
                 return {"code": 200, "message": 'Low carb diet fetch request failed with status code:'+response.status_code}
 
             # Fetch the high protein diet and store in db
             print("Fetching Low fat diet")
+            # time.sleep(10)
             response = requests.get(low_fat_url)
             if response.status_code == 200:
-                json_data = response.json()
-                list(json_data['hits'])
-                if len(list(json_data['hits'])) != 0:
-                    low_fat_diet = {"diet":"low_fat", 'recipes': list(json_data['hits'])[:5]}
-                    diet_db.insert_one(low_fat_diet)
+                data = response.json()
+                json_unformatted_data = data['hits'][:5]
+
+                json_data = []
+                # trim json to fit the data
+                for json_unformatted_var in list(json_unformatted_data):
+                    json_var = {}
+                    json_var["url"] = json_unformatted_var["recipe"]["url"]
+                    json_var["image"] = json_unformatted_var["recipe"]["image"]
+                    json_var["label"] = json_unformatted_var["recipe"]["label"]
+                    json_data.append(json_var)
+                
+                # print(json_data)
+                if len(json_data) != 0:
+                    low_fat_diet_entry_found = diet_db.find_one({"diet":"low_fat"})
+                    if not low_fat_diet_entry_found:
+                        low_fat_diet = {"diet":"low_fat", 'recipes': json_data[:5]}
+                        diet_db.insert_one(low_fat_diet)
+                    else:
+                        reco_input = {"$set": {'recipes': json_data[:5]}}
+                        diet_db.update_one({"diet":"low_fat"}, reco_input)
             else:
                 return {"code": 200, "message": 'Low fat diet fetch request failed with status code:'+response.status_code}
             
             # Calculate the average of all users and update reco db
             users = register_db.find()
             for user in users:
-                print(user)
                 user_nutritions = list(nutrition_db.find({'username': user['username']}))
                 if len(user_nutritions) == 0:
                     continue
@@ -731,16 +801,16 @@ def data_collector():
                     cnt_fat += 1
                     sum_fat += int(n["fat"])
                 
-                print(user['username'], sum_protein, sum_fat, sum_carb, cnt_fat, cnt_carb, cnt_protein)
+                # print(user['username'], sum_protein, sum_fat, sum_carb, cnt_fat, cnt_carb, cnt_protein)
                 reco_user_found = reco_db.find_one({'username':user['username']})
                 if not reco_user_found:
-                    reco_input = {"username":user['username'], "average_protein": sum_protein/cnt_protein, "average_fat":sum_fat/cnt_fat, "average_carb":sum_carb/cnt_carb}
-                    print(reco_input)
+                    reco_input = {"username":user['username'], "average_protein": sum_protein/cnt_protein, "average_fat":sum_fat/cnt_fat, "average_carbs":sum_carb/cnt_carb}
+                    # print(reco_input)
                     reco_db.insert_one(reco_input)
                 else:
-                    reco_entry = {"$set": {"average_protein":int(sum_protein/cnt_protein), "average_fat":int(sum_fat/cnt_fat), "average_carb":int(sum_carb/cnt_carb)}}
+                    reco_entry = {"$set": {"average_protein":int(sum_protein/cnt_protein), "average_fat":int(sum_fat/cnt_fat), "average_carbs":int(sum_carb/cnt_carb)}}
                     reco_db.update_one({'username': user['username']}, reco_entry)
-                    print("Updated")
+                    # print("Updated")
 
             message = "Succesful write to recommendations db"
             return {"code": 200, "message": message}
