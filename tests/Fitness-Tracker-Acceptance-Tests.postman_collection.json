@@ -1,17 +1,17 @@
 {
 	"info": {
 		"_postman_id": "de19fd11-2f92-42cc-ae52-acc2a55377b8",
-		"name": "Fitness-Tracker-Integration-Tests",
+		"name": "Fitness-Tracker-Acceptance-Tests",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "27180869",
-		"_collection_link": "https://orange-astronaut-903755.postman.co/workspace/77872bda-6451-4d2c-8f5b-d6178cc1ce8c/collection/27180869-de19fd11-2f92-42cc-ae52-acc2a55377b8?action=share&creator=27180869&source=collection_link"
+		"_collection_link": "https://orange-astronaut-903755.postman.co/workspace/My-Workspace~77872bda-6451-4d2c-8f5b-d6178cc1ce8c/collection/27180869-de19fd11-2f92-42cc-ae52-acc2a55377b8?action=share&creator=27180869&source=collection_link"
 	},
 	"item": [
 		{
 			"name": "Signup",
 			"item": [
 				{
-					"name": "integration_test_signup_1",
+					"name": "Acceptance_test_signup_1",
 					"event": [
 						{
 							"listen": "test",
@@ -82,7 +82,7 @@
 					"response": []
 				},
 				{
-					"name": "integration_test_signup_2",
+					"name": "Acceptance_test_signup_2",
 					"event": [
 						{
 							"listen": "test",
@@ -153,7 +153,7 @@
 					"response": []
 				},
 				{
-					"name": "integration_test_signup_3",
+					"name": "Acceptance_test_signup_3",
 					"event": [
 						{
 							"listen": "test",
@@ -224,7 +224,7 @@
 					"response": []
 				},
 				{
-					"name": "integration_test_signup_4",
+					"name": "Acceptance_test_signup_4",
 					"event": [
 						{
 							"listen": "test",
@@ -303,7 +303,7 @@
 			"name": "Login",
 			"item": [
 				{
-					"name": "integration_test_login_1",
+					"name": "Acceptance_test_login_1",
 					"event": [
 						{
 							"listen": "test",
@@ -386,7 +386,7 @@
 					"response": []
 				},
 				{
-					"name": "integration_test_login_2",
+					"name": "Acceptance_test_login_2",
 					"event": [
 						{
 							"listen": "test",
@@ -457,7 +457,7 @@
 					"response": []
 				},
 				{
-					"name": "integration_test_login_3",
+					"name": "Acceptance_test_login_3",
 					"event": [
 						{
 							"listen": "test",
@@ -505,7 +505,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"username\": \"adminstrator\", \"password\": \"admin\"}",
+							"raw": "{\"username\": \"adminstrator123\", \"password\": \"admin\"}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -533,7 +533,7 @@
 			"name": "Workout",
 			"item": [
 				{
-					"name": "integration_test_workout_1",
+					"name": "Acceptance_test_workout_1",
 					"event": [
 						{
 							"listen": "test",
@@ -581,7 +581,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{ \"username\": \"adminstrator\", \"date\" : \"04/20/2023\", \"total_steps\": 2130, \"calories_spent\": 610, \"weight_measured\": 60}",
+							"raw": "{ \"username\": \"adminstrator123\", \"date\" : \"04/20/2023\", \"total_steps\": 2130, \"calories_spent\": 610, \"weight_measured\": 60}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -604,7 +604,7 @@
 					"response": []
 				},
 				{
-					"name": "integration_test_workout_2",
+					"name": "Acceptance_test_workout_2",
 					"event": [
 						{
 							"listen": "test",
@@ -675,7 +675,7 @@
 					"response": []
 				},
 				{
-					"name": "integration_test_workout_3",
+					"name": "Acceptance_test_workout_3",
 					"event": [
 						{
 							"listen": "test",
@@ -754,7 +754,7 @@
 			"name": "Nutrition",
 			"item": [
 				{
-					"name": "integration_test_nutrition_1",
+					"name": "Acceptance_test_nutrition_1",
 					"event": [
 						{
 							"listen": "test",
@@ -802,7 +802,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"adminstrator\",\r\n    \"date\" : \"04/20/2023\",\r\n    \"calorie_intake\": 2130,\r\n    \"protein\": 60,\r\n    \"carbs\": 30,\r\n    \"fat\": 10,\r\n    \"water_intake\": 12\r\n}",
+							"raw": "{\r\n    \"username\": \"adminstrator123\",\r\n    \"date\" : \"04/20/2023\",\r\n    \"calorie_intake\": 2130,\r\n    \"protein\": 60,\r\n    \"carbs\": 30,\r\n    \"fat\": 10,\r\n    \"water_intake\": 12\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -825,7 +825,7 @@
 					"response": []
 				},
 				{
-					"name": "integration_test_nutrition_2",
+					"name": "Acceptance_test_nutrition_2",
 					"event": [
 						{
 							"listen": "test",
@@ -896,7 +896,7 @@
 					"response": []
 				},
 				{
-					"name": "integration_test_nutrition_3",
+					"name": "Acceptance_test_nutrition_3",
 					"event": [
 						{
 							"listen": "test",
