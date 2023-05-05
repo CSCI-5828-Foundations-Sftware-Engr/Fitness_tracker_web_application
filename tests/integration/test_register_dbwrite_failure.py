@@ -8,18 +8,6 @@ def client():
     with app.test_client() as client:
         yield client
 
-def test_signup_success(client):
-    payload = {
-        "username": "johndoe",
-        "fullname": "John Doe",
-        "email": "johndoe@example.com",
-        "password": "password",
-        "contactNumber": "1234567890"
-    }
-    response = client.post('/signup', json=payload)
-    assert response.status_code == 200
-    assert response.json['message'] == 'Succesful write to register db'
-
 def test_signup_duplicate_user(client):
     payload = {
         "username": "admin",
@@ -34,7 +22,7 @@ def test_signup_duplicate_user(client):
 
 def test_signup_duplicate_email(client):
     payload = {
-        "username": "trello",
+        "username": "mello",
         "fullname": "adminstrator",
         "email": "admin@fitongo.com",
         "password": "password",

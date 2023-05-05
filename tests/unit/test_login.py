@@ -28,7 +28,7 @@ def test_login_fail(client):
 
 def test_login_user_not_found(client):
     payload = {
-        "username": "adminstrator",
+        "username": "dummy",
         "password": "password"
     }
     response = client.post('/login', json=payload)
